@@ -16,5 +16,5 @@ export default defineConfig({
             '~view': path.resolve(__dirname, './src/view'),
         },
     },
-    plugins: [react()],
+    plugins: [react({ jsxImportSource: '@emotion/react' })],
 });
