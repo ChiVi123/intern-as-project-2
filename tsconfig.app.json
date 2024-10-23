@@ -1,0 +1,53 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+
+        /* Bundler mode */
+        "moduleResolution": "Bundler",
+        "allowImportingTsExtensions": true,
+        "isolatedModules": true,
+        "moduleDetection": "force",
+        "noEmit": true,
+        "jsx": "react-jsx",
+
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+
+        /* Modules */
+        "typeRoots": ["types"],
+
+        /* Paths */
+        "paths": {
+            "~config": ["./src/config"],
+            "~config/*": ["./src/config/*"],
+
+            "~core": ["./src/core"],
+            "~core/*": ["./src/core/*"],
+
+            "~layout": ["./src/layout"],
+            "~layout/*": ["./src/layout/*"],
+
+            "~routers": ["./src/routers"],
+            "~routers/*": ["./src/routers/*"],
+
+            "~css/*": ["./src/shared/assets/css/*"],
+
+            "~icons": ["./src/shared/assets/icons"],
+            "~icons/*": ["./src/shared/assets/icons/*"],
+
+            "~components": ["./src/shared/components"],
+            "~components/*": ["./src/shared/components/*"],
+
+            "~view/*": ["./src/view/*"]
+        }
+    },
+    "include": ["src"]
+}
