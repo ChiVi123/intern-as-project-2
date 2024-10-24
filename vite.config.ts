@@ -9,6 +9,7 @@ export default defineConfig({
             '~config': path.resolve(__dirname, './src/config'),
             '~core': path.resolve(__dirname, './src/core'),
             '~layout': path.resolve(__dirname, './src/layout'),
+            '~modules': path.resolve(__dirname, './src/modules'),
             '~routers': path.resolve(__dirname, './src/routers'),
             '~css': path.resolve(__dirname, './src/shared/assets/css'),
             '~icons': path.resolve(__dirname, './src/shared/assets/icons'),
