@@ -76,7 +76,7 @@ function SignInPage() {
                         </Button>
                         <div css={{ marginTop: 6 }}>
                             <Link to='#!'>
-                                <Typography.Text css={{ color: designToken['orange-6'] }}>
+                                <Typography.Text css={{ color: designToken['orange-500'] }}>
                                     Quên mật khẩu?
                                 </Typography.Text>
                             </Link>
@@ -96,7 +96,7 @@ function SignInPage() {
                         position: 'absolute',
                         top: '50%',
                         right: '3.89%',
-                        '& > div': { margin: 0, lineHeight: 1.5, color: designToken['orange-6'] },
+                        '& > div': { margin: 0, lineHeight: 1.5, color: designToken['orange-500'] },
                     }}
                 >
                     <Typography.Paragraph

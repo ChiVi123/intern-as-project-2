@@ -17,10 +17,10 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(({ cssExpand, ...prop
                 minWidth: 148,
                 height: 48,
                 '&.ant-btn-color-primary.ant-btn-variant-filled:not(:disabled):not(.ant-btn-disabled):hover': {
-                    backgroundColor: designToken['orange-2'],
+                    backgroundColor: designToken['orange-100'],
                 },
                 '&.ant-btn-color-primary.ant-btn-variant-outlined': {
-                    backgroundColor: designToken['orange-1'],
+                    backgroundColor: designToken['orange-50'],
                 },
             },
             cssExpand,
