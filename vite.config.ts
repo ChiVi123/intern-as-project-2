@@ -11,9 +11,12 @@ export default defineConfig({
             '~layout': path.resolve(__dirname, './src/layout'),
             '~modules': path.resolve(__dirname, './src/modules'),
             '~routers': path.resolve(__dirname, './src/routers'),
+
             '~css': path.resolve(__dirname, './src/shared/assets/css'),
             '~icons': path.resolve(__dirname, './src/shared/assets/icons'),
             '~components': path.resolve(__dirname, './src/shared/components'),
+            '~hoc': path.resolve(__dirname, './src/shared/hoc'),
+
             '~view': path.resolve(__dirname, './src/view'),
         },
     },

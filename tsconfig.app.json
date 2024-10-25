@@ -48,6 +48,9 @@
             "~components": ["./src/shared/components"],
             "~components/*": ["./src/shared/components/*"],
 
+            "~hoc": ["./src/shared/hoc"],
+            "~hoc/*": ["./src/shared/hoc/*"],
+
             "~view/*": ["./src/view/*"]
         }
     },
