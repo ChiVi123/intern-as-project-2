@@ -2,7 +2,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, FormProps, Input, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { designToken, useAppDispatch } from '~core';
 import { fetchSignIn, userSelectors } from '~modules/user';
 
@@ -12,14 +12,15 @@ type FieldType = {
 };
 
 function SignInPage() {
-    const { data, loading, error } = useSelector(userSelectors.state);
+    const { loading, error } = useSelector(userSelectors.state);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (loading === 'fulfilled') {
-            console.log(data);
+            navigate('/dashboard/profile');
         }
-    }, [data, loading]);
+    }, [loading, navigate]);
 
     const handleFinish: FormProps<FieldType>['onFinish'] = async ({ username, password }) => {
         await dispatch(fetchSignIn({ email: username! + '@as.intern', password: password! }));
@@ -47,7 +48,7 @@ function SignInPage() {
                     <Form.Item<FieldType>
                         label='Mật khẩu'
                         name='password'
-                        validateStatus='error'
+                        validateStatus={error ? 'error' : ''}
                         rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
                         help={
                             error ? (
