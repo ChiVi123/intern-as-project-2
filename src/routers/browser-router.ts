@@ -9,21 +9,28 @@ import roleManagementRouter from '~view/setting/role-management/router';
 import userLoggingRouter from '~view/setting/user-logging/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
+import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
     {
         path: '',
         Component: DefaultLayout,
         children: [
-            homeRouter,
             {
-                path: '/dashboard',
-                children: [dashboardRouter, profileRouter],
+                path: '',
+                Component: PrivateRoute,
+                children: [
+                    homeRouter,
+                    {
+                        path: '/dashboard',
+                        children: [dashboardRouter, profileRouter],
+                    },
+                    monitorRouter,
+                    roleManagementRouter,
+                    userManagementRouter,
+                    userLoggingRouter,
+                ],
             },
-            monitorRouter,
-            roleManagementRouter,
-            userManagementRouter,
-            userLoggingRouter,
         ],
     },
     {
