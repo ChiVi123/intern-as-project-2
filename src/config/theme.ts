@@ -2,8 +2,12 @@ import { ThemeConfig } from 'antd';
 
 export const themeConfig: ThemeConfig = {
     components: {
-        Layout: { siderBg: '#fff', bodyBg: '#f6f6f6' },
         Button: { paddingBlock: 12, paddingInline: 0, contentFontSize: 16, contentLineHeight: 1 },
+        Layout: { siderBg: '#fff', bodyBg: '#f6f6f6' },
+        Table: {
+            headerColor: '#fff',
+            headerBg: '#ff9138',
+        },
     },
     token: {
         // font
@@ -21,5 +25,6 @@ export const themeConfig: ThemeConfig = {
         // green
         colorSuccess: '#34cd26',
         colorText: '#282739',
+        // colorTextHeading: '#ff7506',
     },
 };
