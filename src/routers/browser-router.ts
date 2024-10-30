@@ -4,6 +4,7 @@ import { BodyOnlyLayout, DefaultLayout } from '~layout';
 import profileRouter from '~view/dashboard/profile/router';
 import dashboardRouter from '~view/dashboard/router';
 import homeRouter from '~view/home/router';
+import addMonitorRouter from '~view/monitor/add/router';
 import monitorRouter from '~view/monitor/router';
 import roleManagementRouter from '~view/setting/role-management/router';
 import userLoggingRouter from '~view/setting/user-logging/router';
@@ -25,7 +26,10 @@ export const browserRouter = createBrowserRouter([
                         path: '/dashboard',
                         children: [dashboardRouter, profileRouter],
                     },
-                    monitorRouter,
+                    {
+                        path: '/monitor',
+                        children: [monitorRouter, addMonitorRouter],
+                    },
                     roleManagementRouter,
                     userManagementRouter,
                     userLoggingRouter,
