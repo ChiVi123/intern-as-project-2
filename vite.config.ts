@@ -15,6 +15,7 @@ export default defineConfig({
             '~css': path.resolve(__dirname, './src/shared/assets/css'),
             '~icons': path.resolve(__dirname, './src/shared/assets/icons'),
             '~components': path.resolve(__dirname, './src/shared/components'),
+            '~helper': path.resolve(__dirname, './src/shared/helper'),
             '~hoc': path.resolve(__dirname, './src/shared/hoc'),
 
             '~view': path.resolve(__dirname, './src/view'),
