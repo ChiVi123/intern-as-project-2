@@ -1,8 +1,18 @@
 import { Button } from '~components';
+import { firebaseAuth } from '~config';
+import { useAppDispatch } from '~core';
 import { RightFromBracketFilledIcon } from '~icons';
+import { userActions } from '~modules/user';
 import Navigate from './navigate';
 
 function Sidebar() {
+    const dispatch = useAppDispatch();
+
+    const handleSignOut = async () => {
+        await firebaseAuth.signOut();
+        dispatch(userActions.logout());
+    };
+
     return (
         <>
             <div>
@@ -18,7 +28,7 @@ function Sidebar() {
             </div>
 
             <div css={{ paddingInline: 12 }}>
-                <Button variant='filled' block icon={<RightFromBracketFilledIcon />}>
+                <Button variant='filled' block icon={<RightFromBracketFilledIcon />} onClick={handleSignOut}>
                     Đăng xuất
                 </Button>
             </div>
