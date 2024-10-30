@@ -13,7 +13,6 @@ function FirebaseAuth() {
             dispatch(userActions.startPending());
             if (user) {
                 console.log('authenticated');
-
                 dispatch(userActions.addUser(mapUserToUserEntity(user)));
             } else {
                 console.log('unauthenticated');
