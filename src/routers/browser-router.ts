@@ -9,6 +9,7 @@ import monitorDetailRouter from '~view/monitor/detail/router';
 import editMonitorRouter from '~view/monitor/edit/router';
 import monitorRouter from '~view/monitor/router';
 import serviceDetailRouter from '~view/service/detail/router';
+import editServiceRouter from '~view/service/edit/router';
 import serviceRouter from '~view/service/router';
 import roleManagementRouter from '~view/setting/role-management/router';
 import userLoggingRouter from '~view/setting/user-logging/router';
@@ -37,7 +38,7 @@ export const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/service',
-                        children: [serviceRouter, serviceDetailRouter],
+                        children: [serviceRouter, serviceDetailRouter, editServiceRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
