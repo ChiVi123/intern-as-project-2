@@ -6,14 +6,15 @@ import dashboardRouter from '~view/dashboard/router';
 import homeRouter from '~view/home/router';
 import addMonitorRouter from '~view/monitor/add/router';
 import monitorDetailRouter from '~view/monitor/detail/router';
+import editMonitorRouter from '~view/monitor/edit/router';
 import monitorRouter from '~view/monitor/router';
+import serviceDetailRouter from '~view/service/detail/router';
+import serviceRouter from '~view/service/router';
 import roleManagementRouter from '~view/setting/role-management/router';
 import userLoggingRouter from '~view/setting/user-logging/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
-import editMonitorRouter from '~view/monitor/edit/router';
-import serviceRouter from '~view/service/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -36,7 +37,7 @@ export const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/service',
-                        children: [serviceRouter],
+                        children: [serviceRouter, serviceDetailRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
