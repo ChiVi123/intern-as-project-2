@@ -10,6 +10,7 @@ import editMonitorRouter from '~view/monitor/edit/router';
 import monitorRouter from '~view/monitor/router';
 import addQueueRouter from '~view/queueing/add/router';
 import queueingRouter from '~view/queueing/router';
+import reportRouter from '~view/report/router';
 import serviceDetailRouter from '~view/service/detail/router';
 import editServiceRouter from '~view/service/edit/router';
 import serviceRouter from '~view/service/router';
@@ -46,6 +47,7 @@ export const browserRouter = createBrowserRouter([
                         path: '/queueing',
                         children: [queueingRouter, addQueueRouter],
                     },
+                    reportRouter,
                     roleManagementRouter,
                     userManagementRouter,
                     userLoggingRouter,

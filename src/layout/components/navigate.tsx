@@ -86,7 +86,7 @@ function Navigate() {
             {
                 key: '/report',
                 icon: <FileChartOutlinedIcon />,
-                label: 'Báo cáo',
+                label: <Link to='/report'>Báo cáo</Link>,
             },
             {
                 key: '/setting',
