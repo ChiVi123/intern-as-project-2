@@ -12,6 +12,7 @@ import userLoggingRouter from '~view/setting/user-logging/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
+import editMonitorRouter from '~view/monitor/edit/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -30,7 +31,7 @@ export const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/monitor',
-                        children: [monitorRouter, addMonitorRouter, monitorDetailRouter],
+                        children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
