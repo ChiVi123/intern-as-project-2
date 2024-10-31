@@ -8,6 +8,8 @@ import addMonitorRouter from '~view/monitor/add/router';
 import monitorDetailRouter from '~view/monitor/detail/router';
 import editMonitorRouter from '~view/monitor/edit/router';
 import monitorRouter from '~view/monitor/router';
+import addQueueRouter from '~view/queueing/add/router';
+import queueingRouter from '~view/queueing/router';
 import serviceDetailRouter from '~view/service/detail/router';
 import editServiceRouter from '~view/service/edit/router';
 import serviceRouter from '~view/service/router';
@@ -16,7 +18,6 @@ import userLoggingRouter from '~view/setting/user-logging/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
-import queueingRouter from '~view/queueing/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -43,7 +44,7 @@ export const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/queueing',
-                        children: [queueingRouter],
+                        children: [queueingRouter, addQueueRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
