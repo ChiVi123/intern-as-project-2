@@ -13,6 +13,7 @@ export default defineConfig({
             '~routers': path.resolve(__dirname, './src/routers'),
 
             '~css': path.resolve(__dirname, './src/shared/assets/css'),
+            '~css-emotion': path.resolve(__dirname, './src/shared/assets/css-emotion'),
             '~icons': path.resolve(__dirname, './src/shared/assets/icons'),
             '~components': path.resolve(__dirname, './src/shared/components'),
             '~helper': path.resolve(__dirname, './src/shared/helper'),

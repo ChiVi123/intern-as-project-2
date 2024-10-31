@@ -42,6 +42,9 @@
 
             "~css/*": ["./src/shared/assets/css/*"],
 
+            "~css-emotion": ["./src/shared/assets/css-emotion"],
+            "~css-emotion/*": ["./src/shared/assets/css-emotion/*"],
+
             "~icons": ["./src/shared/assets/icons"],
             "~icons/*": ["./src/shared/assets/icons/*"],
 
