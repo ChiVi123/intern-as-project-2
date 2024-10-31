@@ -81,7 +81,7 @@ function Navigate() {
             {
                 key: '/queueing',
                 icon: <LayerGroupOutlinedIcon />,
-                label: 'Cấp số',
+                label: <Link to='/queueing'>Cấp số</Link>,
             },
             {
                 key: '/report',

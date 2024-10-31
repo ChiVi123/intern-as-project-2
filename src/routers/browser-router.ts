@@ -16,6 +16,7 @@ import userLoggingRouter from '~view/setting/user-logging/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
+import queueingRouter from '~view/queueing/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -39,6 +40,10 @@ export const browserRouter = createBrowserRouter([
                     {
                         path: '/service',
                         children: [serviceRouter, serviceDetailRouter, editServiceRouter],
+                    },
+                    {
+                        path: '/queueing',
+                        children: [queueingRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
