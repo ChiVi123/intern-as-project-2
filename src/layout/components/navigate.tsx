@@ -76,7 +76,7 @@ function Navigate() {
             {
                 key: '/service',
                 icon: <MessageOutlinedIcon />,
-                label: 'Dịch vụ',
+                label: <Link to='/service'>Dịch vụ</Link>,
             },
             {
                 key: '/queueing',

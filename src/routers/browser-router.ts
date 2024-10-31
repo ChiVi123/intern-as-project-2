@@ -13,6 +13,7 @@ import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
 import editMonitorRouter from '~view/monitor/edit/router';
+import serviceRouter from '~view/service/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -32,6 +33,10 @@ export const browserRouter = createBrowserRouter([
                     {
                         path: '/monitor',
                         children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
+                    },
+                    {
+                        path: '/service',
+                        children: [serviceRouter],
                     },
                     roleManagementRouter,
                     userManagementRouter,
