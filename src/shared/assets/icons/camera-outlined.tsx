@@ -1,4 +1,4 @@
-import { CustomIcon } from '~hoc';
+import { customIcon } from '~hoc';
 
 const CameraOutlinedSvg = () => (
     <svg width='1em' height='1em' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -10,6 +10,6 @@ const CameraOutlinedSvg = () => (
         />
     </svg>
 );
-const CameraOutlinedIcon = CustomIcon(CameraOutlinedSvg);
+const CameraOutlinedIcon = customIcon(CameraOutlinedSvg);
 
 export default CameraOutlinedIcon;

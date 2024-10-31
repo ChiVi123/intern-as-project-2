@@ -1,4 +1,4 @@
-import { CustomIcon } from '~hoc';
+import { customIcon } from '~hoc';
 
 const ChevronDownSolidSvg = () => (
     <svg width='1em' height='1em' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -12,6 +12,6 @@ const ChevronDownSolidSvg = () => (
         />
     </svg>
 );
-const ChevronDownSolidIcon = CustomIcon(ChevronDownSolidSvg);
+const ChevronDownSolidIcon = customIcon(ChevronDownSolidSvg);
 
 export default ChevronDownSolidIcon;

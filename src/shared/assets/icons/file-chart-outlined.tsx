@@ -1,4 +1,4 @@
-import { CustomIcon } from '~hoc';
+import { customIcon } from '~hoc';
 
 const FileChartOutlinedSvg = () => (
     <svg width='1em' height='1em' viewBox='0 0 18 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -60,6 +60,6 @@ const FileChartOutlinedSvg = () => (
         </defs>
     </svg>
 );
-const FileChartOutlinedIcon = CustomIcon(FileChartOutlinedSvg);
+const FileChartOutlinedIcon = customIcon(FileChartOutlinedSvg);
 
 export default FileChartOutlinedIcon;
