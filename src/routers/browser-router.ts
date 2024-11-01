@@ -14,8 +14,12 @@ import reportRouter from '~view/report/router';
 import serviceDetailRouter from '~view/service/detail/router';
 import editServiceRouter from '~view/service/edit/router';
 import serviceRouter from '~view/service/router';
+import addRoleUserRouter from '~view/setting/role-management/add/router';
+import editRoleUserRouter from '~view/setting/role-management/edit/router';
 import roleManagementRouter from '~view/setting/role-management/router';
 import userLoggingRouter from '~view/setting/user-logging/router';
+import addUserRouter from '~view/setting/user-management/add/router';
+import editUserRouter from '~view/setting/user-management/edit/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
@@ -48,9 +52,20 @@ export const browserRouter = createBrowserRouter([
                         children: [queueingRouter, addQueueRouter],
                     },
                     reportRouter,
-                    roleManagementRouter,
-                    userManagementRouter,
-                    userLoggingRouter,
+                    {
+                        path: 'setting',
+                        children: [
+                            {
+                                path: 'role-management',
+                                children: [roleManagementRouter, addRoleUserRouter, editRoleUserRouter],
+                            },
+                            {
+                                path: 'user-management',
+                                children: [userManagementRouter, addUserRouter, editUserRouter],
+                            },
+                            userLoggingRouter,
+                        ],
+                    },
                 ],
             },
         ],

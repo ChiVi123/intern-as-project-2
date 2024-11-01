@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const userManagementRouter: RouteObject = {
-    path: '',
+const addUserRouter: RouteObject = {
+    path: 'add',
     Component: lazy(() => import('./page')),
 };
 
-export default userManagementRouter;
+export default addUserRouter;
