@@ -59,7 +59,7 @@ const StyledMenu = styled(MenuComponent)({
 });
 
 function Navigate() {
-    const [, matcher] = useMatches();
+    const matchers = useMatches();
 
     const items = useMemo<MenuItem[]>(
         () => [
@@ -130,7 +130,11 @@ function Navigate() {
                 },
             }}
         >
-            <StyledMenu selectedKeys={[matcher.pathname]} items={items} expandIcon={<MoreOutlined />} />
+            <StyledMenu
+                selectedKeys={matchers.map((item) => item.pathname)}
+                items={items}
+                expandIcon={<MoreOutlined />}
+            />
         </ConfigProvider>
     );
 }
