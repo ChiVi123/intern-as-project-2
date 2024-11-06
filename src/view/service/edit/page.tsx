@@ -143,7 +143,7 @@ function EditServicePage() {
 
                             <Form.Item name={['rule', 'autoIncrement', 'start']} style={{ margin: 0 }}>
                                 <InputNumber
-                                    formatter={(value) => value?.toString().padStart(3, '0') || ''}
+                                    formatter={(value) => value?.toString().padStart(4, '0') || ''}
                                     style={{ display: 'inline-block', minWidth: 60 }}
                                     onWheel={(e) => e.currentTarget.blur()}
                                 />
@@ -153,7 +153,7 @@ function EditServicePage() {
 
                             <Form.Item name={['rule', 'autoIncrement', 'end']} style={{ margin: 0 }}>
                                 <InputNumber
-                                    formatter={(value) => value?.toString().padStart(3, '0') || ''}
+                                    formatter={(value) => value?.toString().padStart(4, '0') || ''}
                                     style={{ display: 'inline-block', minWidth: 60 }}
                                     onWheel={(e) => e.currentTarget.blur()}
                                 />
