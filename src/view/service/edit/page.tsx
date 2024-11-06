@@ -1,19 +1,96 @@
-import { Checkbox, Flex, Form, FormProps, Input, Typography } from 'antd';
+import { Checkbox, Flex, Form, FormProps, Input, InputNumber, message, Typography } from 'antd';
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
+import { useMemo } from 'react';
+import { useLoaderData } from 'react-router-dom';
+
 import { Button } from '~components';
-import { designToken } from '~core';
+import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
 import { cssHeading, cssPaper } from '~css-emotion';
+import { editServiceById, IServiceEntity } from '~modules/service';
+
+type ServiceField = {
+    id: string;
+    name: string;
+    description: string;
+    rule: {
+        autoIncrement: { active: boolean; start: number; end: number };
+        prefix: { active: boolean; value: string };
+        suffix: { active: boolean; value: string };
+        reset: boolean;
+    };
+};
+const defaultValues: ServiceField = {
+    id: '',
+    name: '',
+    description: '',
+    rule: {
+        autoIncrement: { active: false, start: 1, end: 9999 },
+        prefix: { active: false, value: '0001' },
+        suffix: { active: false, value: '0001' },
+        reset: false,
+    },
+};
 
 function EditServicePage() {
+    const [messageApi, contextHolder] = message.useMessage();
+    const loader = useLoaderData() as ResponseRepo<DocumentSnapshot<IServiceEntity, DocumentData>> | ResponseErrorRepo;
+    const initialValues = useMemo<ServiceField>(() => {
+        if (loader instanceof ResponseErrorRepo) {
+            return defaultValues;
+        }
+        if (!loader.data) {
+            return defaultValues;
+        }
+        if (!loader.data.exists()) {
+            return defaultValues;
+        }
+
+        const data = loader.data.data();
+        const formData: ServiceField = {
+            id: loader.data.id,
+            name: data.name,
+            description: data.description,
+            rule: {
+                autoIncrement: { ...data.rule.autoIncrement, active: true },
+                prefix: { value: data.rule.prefix, active: true },
+                suffix: { value: data.rule.suffix, active: true },
+                reset: data.rule.reset,
+            },
+        };
+        return formData;
+    }, [loader]);
     const [form] = Form.useForm();
-    const handleSubmit: FormProps['onFinish'] = (value) => {
-        console.log(value);
+
+    const handleSubmit: FormProps<ServiceField>['onFinish'] = async ({ id, rule, ...rest }) => {
+        const {
+            autoIncrement: { active: activeIncrement, ...autoIncrement },
+            prefix: { active: activePrefix, ...prefix },
+            suffix: { active: activeSuffix, ...suffix },
+        } = rule;
+
+        const data: Omit<IServiceEntity, 'id'> = {
+            ...rest,
+            status: { label: 'Hoạt động', value: 'running' },
+            rule: {
+                autoIncrement: activeIncrement ? autoIncrement : initialValues.rule.autoIncrement,
+                prefix: activePrefix ? prefix.value : initialValues.rule.prefix.value,
+                suffix: activeSuffix ? suffix.value : initialValues.rule.suffix.value,
+                reset: rule.reset,
+            },
+        };
+
+        const result = await editServiceById(id, data);
+        messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
     };
+
     return (
         <>
+            {contextHolder}
+
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
 
             <div css={cssPaper}>
-                <Form form={form} name='edit_service_root' onFinish={handleSubmit}>
+                <Form form={form} name='edit_service_root' initialValues={initialValues} onFinish={handleSubmit}>
                     <Typography.Title level={4} css={cssHeading} style={{ marginBottom: 12 }}>
                         Thông tin dịch vụ
                     </Typography.Title>
@@ -64,22 +141,22 @@ function EditServicePage() {
                                 </Checkbox>
                             </Form.Item>
 
-                            <Form.Item
-                                name={['rule', 'autoIncrement', 'start']}
-                                initialValue='0001'
-                                style={{ margin: 0 }}
-                            >
-                                <Input style={{ display: 'inline-block', width: 60 }} />
+                            <Form.Item name={['rule', 'autoIncrement', 'start']} style={{ margin: 0 }}>
+                                <InputNumber
+                                    formatter={(value) => value?.toString().padStart(3, '0') || ''}
+                                    style={{ display: 'inline-block', minWidth: 60 }}
+                                    onWheel={(e) => e.currentTarget.blur()}
+                                />
                             </Form.Item>
 
                             <span>đến</span>
 
-                            <Form.Item
-                                name={['rule', 'autoIncrement', 'end']}
-                                initialValue='9999'
-                                style={{ margin: 0 }}
-                            >
-                                <Input style={{ display: 'inline-block', width: 60 }} />
+                            <Form.Item name={['rule', 'autoIncrement', 'end']} style={{ margin: 0 }}>
+                                <InputNumber
+                                    formatter={(value) => value?.toString().padStart(3, '0') || ''}
+                                    style={{ display: 'inline-block', minWidth: 60 }}
+                                    onWheel={(e) => e.currentTarget.blur()}
+                                />
                             </Form.Item>
                         </Flex>
                     </Form.Item>
@@ -98,7 +175,27 @@ function EditServicePage() {
                                 </Checkbox>
                             </Form.Item>
 
-                            <Form.Item name={['rule', 'prefix', 'value']} initialValue='0001' style={{ margin: 0 }}>
+                            <Form.Item name={['rule', 'prefix', 'value']} style={{ margin: 0 }}>
+                                <Input style={{ display: 'inline-block', width: 60 }} />
+                            </Form.Item>
+                        </Flex>
+                    </Form.Item>
+
+                    <Form.Item style={{ marginBottom: 12 }}>
+                        <Flex align='center' gap={12}>
+                            <Form.Item<ServiceField>
+                                name={['rule', 'suffix', 'active']}
+                                valuePropName='checked'
+                                style={{ minWidth: 138, margin: 0 }}
+                            >
+                                <Checkbox>
+                                    <Typography.Text strong style={{ display: 'inline-block' }}>
+                                        Suffix:
+                                    </Typography.Text>
+                                </Checkbox>
+                            </Form.Item>
+
+                            <Form.Item<ServiceField> name={['rule', 'suffix', 'value']} style={{ margin: 0 }}>
                                 <Input style={{ display: 'inline-block', width: 60 }} />
                             </Form.Item>
                         </Flex>
