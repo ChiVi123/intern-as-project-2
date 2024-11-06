@@ -21,7 +21,7 @@ function DefaultLayout() {
                 <Sidebar />
             </Layout.Sider>
 
-            <Layout.Content css={{ minHeight: '100vh', padding: '88px 104px 0 24px' }}>
+            <Layout.Content css={{ minHeight: '100vh', padding: '88px 104px 26px 24px' }}>
                 <Suspense fallback={<Skeleton />}>
                     <Outlet />
                 </Suspense>
