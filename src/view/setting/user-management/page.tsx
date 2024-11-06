@@ -1,7 +1,7 @@
-import { Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
+import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
 
-import { Select as StyledSelect } from '~components';
+import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
@@ -154,20 +154,7 @@ function UserManagementPage() {
                 </Form.Item>
             </Form>
 
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 9 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+            <Table dataSource={dataSource} columns={columns} />
         </>
     );
 }

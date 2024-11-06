@@ -1,8 +1,8 @@
-import { DatePicker, Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
+import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Select as StyledSelect } from '~components';
+import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
@@ -68,7 +68,7 @@ const columns: TableColumnsType<DataType> = [
     {
         title: '',
         dataIndex: 'id',
-        key: 'service-detail',
+        key: 'service-edit',
         render: (value) => (
             <Link to={`/service/edit/${value}`} style={{ textDecoration: 'underline', color: designToken.colorLink }}>
                 Cập nhật
@@ -92,7 +92,7 @@ function ServicePage() {
         <>
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
 
-            <Form name='horizontal_login' layout='inline'>
+            <Form name='service_search' layout='inline'>
                 <Form.Item
                     layout='vertical'
                     label='Trạng thái hoạt động'
@@ -108,15 +108,7 @@ function ServicePage() {
                 </Form.Item>
 
                 <Form.Item layout='vertical' label='Chọn thời gian'>
-                    <Form.Item
-                        name='startDate'
-                        style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: 8 }}
-                    >
-                        <DatePicker />
-                    </Form.Item>
-                    <Form.Item name='endDate' style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: 0 }}>
-                        <DatePicker />
-                    </Form.Item>
+                    <DatePicker.RangePicker />
                 </Form.Item>
 
                 <Form.Item
@@ -129,20 +121,7 @@ function ServicePage() {
                 </Form.Item>
             </Form>
 
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 9 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+            <Table dataSource={dataSource} columns={columns} />
         </>
     );
 }

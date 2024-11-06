@@ -1,5 +1,7 @@
-import { DatePicker, Form, Table, TableColumnsType } from 'antd';
+import { DatePicker, Form, TableColumnsType } from 'antd';
 import { useMemo } from 'react';
+import { Table } from '~components';
+
 import { designToken } from '~core';
 
 interface DataType {
@@ -100,34 +102,13 @@ function ReportPage() {
     );
     return (
         <>
-            <Form name='inline_search' layout='inline'>
-                <Form.Item layout='vertical' label='Chọn thời gian'>
-                    <Form.Item
-                        name='startDate'
-                        style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: 8 }}
-                    >
-                        <DatePicker />
-                    </Form.Item>
-                    <Form.Item name='endDate' style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: 0 }}>
-                        <DatePicker />
-                    </Form.Item>
+            <Form name='report_search' layout='inline'>
+                <Form.Item layout='vertical' label='Chọn thời gian' name='rangeDate'>
+                    <DatePicker.RangePicker />
                 </Form.Item>
             </Form>
 
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 10 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+            <Table dataSource={dataSource} columns={columns} />
         </>
     );
 }

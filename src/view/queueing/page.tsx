@@ -1,8 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { DatePicker, Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
+import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Select as StyledSelect } from '~components';
+
+import { Button, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
@@ -133,8 +134,8 @@ function QueueingPage() {
         <>
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
 
-            <Form name='inline_search' layout='inline'>
-                <Form.Item layout='vertical' label='Tên dịch vụ' name='name' initialValue='all'>
+            <Form name='queueing_search' layout='inline'>
+                <Form.Item layout='vertical' label='Tên dịch vụ' name='serviceName' initialValue='all'>
                     <StyledSelect placeholder='Tất cả' suffixIcon={<ChevronDownSolidIcon />}>
                         <Select.Option value='all'>Tất cả</Select.Option>
                         <Select.Option value='kham-san---phu-khoa'>Khám sản - Phụ khoa</Select.Option>
@@ -143,7 +144,7 @@ function QueueingPage() {
                     </StyledSelect>
                 </Form.Item>
 
-                <Form.Item layout='vertical' label='Tình trạng' name='name' initialValue='all'>
+                <Form.Item layout='vertical' label='Tình trạng' name='status' initialValue='all'>
                     <StyledSelect placeholder='Tất cả' suffixIcon={<ChevronDownSolidIcon />}>
                         <Select.Option value='all'>Tất cả</Select.Option>
                         <Select.Option value='pending'>Đang chờ</Select.Option>
@@ -152,7 +153,7 @@ function QueueingPage() {
                     </StyledSelect>
                 </Form.Item>
 
-                <Form.Item layout='vertical' label='Nguồn cấp' name='name' initialValue='all'>
+                <Form.Item layout='vertical' label='Nguồn cấp' name='device' initialValue='all'>
                     <StyledSelect placeholder='Tất cả' suffixIcon={<ChevronDownSolidIcon />}>
                         <Select.Option value='all'>Tất cả</Select.Option>
                         <Select.Option value='kiosk'>Kiosk</Select.Option>
@@ -160,16 +161,8 @@ function QueueingPage() {
                     </StyledSelect>
                 </Form.Item>
 
-                <Form.Item layout='vertical' label='Chọn thời gian'>
-                    <Form.Item
-                        name='startDate'
-                        style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: 8 }}
-                    >
-                        <DatePicker />
-                    </Form.Item>
-                    <Form.Item name='endDate' style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: 0 }}>
-                        <DatePicker />
-                    </Form.Item>
+                <Form.Item layout='vertical' label='Chọn thời gian' name='rangeDate'>
+                    <DatePicker.RangePicker />
                 </Form.Item>
 
                 <Form.Item
@@ -182,20 +175,7 @@ function QueueingPage() {
                 </Form.Item>
             </Form>
 
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 9 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+            <Table dataSource={dataSource} columns={columns} />
 
             <Link to='/queueing/add'>
                 <div

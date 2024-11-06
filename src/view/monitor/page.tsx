@@ -1,10 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
-import { Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
+import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, Select as StyledSelect } from '~components';
+import { Button, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { ChevronDownSolidIcon } from '~icons';
 
@@ -179,20 +179,8 @@ function MonitorPage() {
                     <Input.Search placeholder='Nhập từ khóa' />
                 </Form.Item>
             </Form>
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 9 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+
+            <Table dataSource={dataSource} columns={columns} />
 
             <Link to='/monitor/add'>
                 <div

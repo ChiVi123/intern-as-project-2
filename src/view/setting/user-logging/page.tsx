@@ -1,6 +1,7 @@
-import { DatePicker, Form, Input, Table, TableColumnsType } from 'antd';
+import { DatePicker, Form, Input, TableColumnsType } from 'antd';
 import { useMemo } from 'react';
-import { designToken } from '~core';
+import { Table } from '~components';
+
 import { cssWidthInputFormSearch } from '~css-emotion';
 
 interface DataType {
@@ -75,17 +76,9 @@ function UserLoggingPage() {
     );
     return (
         <>
-            <Form name='horizontal_login' layout='inline'>
-                <Form.Item layout='vertical' label='Chọn thời gian'>
-                    <Form.Item
-                        name='startDate'
-                        style={{ display: 'inline-block', width: 'calc(50% - 8px)', marginRight: 8 }}
-                    >
-                        <DatePicker />
-                    </Form.Item>
-                    <Form.Item name='endDate' style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: 0 }}>
-                        <DatePicker />
-                    </Form.Item>
+            <Form name='user_logging' layout='inline'>
+                <Form.Item layout='vertical' label='Chọn thời gian' name='rangeDate'>
+                    <DatePicker.RangePicker />
                 </Form.Item>
 
                 <Form.Item
@@ -98,20 +91,7 @@ function UserLoggingPage() {
                 </Form.Item>
             </Form>
 
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                bordered
-                rowHoverable={false}
-                pagination={{ defaultPageSize: 9 }}
-                rowKey={'id'}
-                css={{
-                    marginTop: 16,
-                    '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                        backgroundColor: designToken['orange-50'],
-                    },
-                }}
-            />
+            <Table dataSource={dataSource} columns={columns} />
         </>
     );
 }
