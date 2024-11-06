@@ -1,9 +1,12 @@
-import { Col, DatePicker, Flex, Form, Input, Row, Select, Table, TableColumnsType, Typography } from 'antd';
+import { Col, DatePicker, Flex, Form, Input, InputNumber, Row, Select, TableColumnsType, Typography } from 'antd';
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { useMemo } from 'react';
-import { Select as StyledSelect } from '~components';
-import { designToken } from '~core';
+import { useLoaderData } from 'react-router-dom';
+import { Select as StyledSelect, Table } from '~components';
+import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
 import { cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
+import { IServiceEntity } from '~modules/service';
 
 interface DataType {
     id: string;
@@ -48,7 +51,21 @@ const columns: TableColumnsType<DataType> = [
     },
 ];
 
+const defaultValues: IServiceEntity = {
+    id: '',
+    name: '',
+    description: '',
+    rule: {
+        autoIncrement: { start: 1, end: 9999 },
+        prefix: '',
+        suffix: '',
+        reset: false,
+    },
+    status: { label: '', value: '' },
+};
+
 function ServiceDetailPage() {
+    const loader = useLoaderData() as ResponseRepo<DocumentSnapshot<IServiceEntity, DocumentData>> | ResponseErrorRepo;
     const dataSource = useMemo(
         () =>
             Array.from<DataType>({ length: 60 }).map<DataType>((_, i) => ({
@@ -57,6 +74,20 @@ function ServiceDetailPage() {
             })),
         [],
     );
+    const service = useMemo(() => {
+        if (loader instanceof ResponseErrorRepo) {
+            return defaultValues;
+        }
+        if (!loader.data) {
+            return defaultValues;
+        }
+        if (!loader.data.exists()) {
+            return defaultValues;
+        }
+
+        return { ...loader.data.data(), id: loader.data.id };
+    }, [loader]);
+
     return (
         <>
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
@@ -69,15 +100,15 @@ function ServiceDetailPage() {
                     <Row gutter={[0, 12]}>
                         <Col span={24}>
                             <Typography.Text strong>Mã dịch vụ: </Typography.Text>
-                            <Typography.Text>201</Typography.Text>
+                            <Typography.Text>{service.id}</Typography.Text>
                         </Col>
                         <Col span={24}>
                             <Typography.Text strong>Tên dịch vụ: </Typography.Text>
-                            <Typography.Text>Khám tim mạch</Typography.Text>
+                            <Typography.Text>{service.name}</Typography.Text>
                         </Col>
                         <Col span={24}>
                             <Typography.Text strong>Mô tả: </Typography.Text>
-                            <Typography.Text>Chuyên các bệnh lý về tim</Typography.Text>
+                            <Typography.Text>{service.description}</Typography.Text>
                         </Col>
                     </Row>
 
@@ -93,9 +124,19 @@ function ServiceDetailPage() {
                                 </Col>
                                 <Col span={16}>
                                     <Flex align='center' gap={4}>
-                                        <Input defaultValue='0001' style={{ flex: 1 }} />
+                                        <InputNumber
+                                            defaultValue={service.rule.autoIncrement.start}
+                                            formatter={(value) => value?.toString().padStart(4, '0') || ''}
+                                            style={{ flex: 1 }}
+                                            onWheel={(e) => e.currentTarget.blur()}
+                                        />
                                         <Typography.Text>đến</Typography.Text>
-                                        <Input defaultValue='9999' style={{ flex: 1 }} />
+                                        <InputNumber
+                                            defaultValue={service.rule.autoIncrement.end}
+                                            formatter={(value) => value?.toString().padStart(4, '0') || ''}
+                                            style={{ flex: 1 }}
+                                            onWheel={(e) => e.currentTarget.blur()}
+                                        />
                                     </Flex>
                                 </Col>
                             </Row>
@@ -107,14 +148,20 @@ function ServiceDetailPage() {
                                     <Typography.Text strong>Prefix: </Typography.Text>
                                 </Col>
                                 <Col span={16}>
-                                    <Input defaultValue='0001' style={{ width: 60 }} />
+                                    <Input defaultValue={service.rule.prefix} style={{ width: 60 }} />
                                 </Col>
                             </Row>
                         </Col>
 
                         <Col span={24}>
-                            <Typography.Text strong>Reset mỗi ngày</Typography.Text>
-                            <Typography.Paragraph>Ví dụ: 201-2001</Typography.Paragraph>
+                            {service.rule.reset && (
+                                <>
+                                    <Typography.Text strong>Reset mỗi ngày</Typography.Text>
+                                    <Typography.Paragraph>
+                                        Ví dụ: {service.rule.prefix}-{service.rule.suffix}
+                                    </Typography.Paragraph>
+                                </>
+                            )}
                         </Col>
                     </Row>
                 </div>
@@ -160,20 +207,7 @@ function ServiceDetailPage() {
                         </Form.Item>
                     </Form>
 
-                    <Table
-                        dataSource={dataSource}
-                        columns={columns}
-                        bordered
-                        rowHoverable={false}
-                        pagination={{ defaultPageSize: 8 }}
-                        rowKey={'id'}
-                        css={{
-                            marginTop: 16,
-                            '&.ant-table-wrapper .ant-table-row:nth-of-type(even)': {
-                                backgroundColor: designToken['orange-50'],
-                            },
-                        }}
-                    />
+                    <Table dataSource={dataSource} columns={columns} defaultPageSize={8} />
                 </div>
             </Flex>
         </>
