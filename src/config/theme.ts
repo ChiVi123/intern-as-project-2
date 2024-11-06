@@ -8,6 +8,10 @@ export const themeConfig: ThemeConfig = {
             headerColor: '#fff',
             headerBg: '#ff9138',
         },
+        Tag: {
+            defaultBg: '#ff7506',
+            defaultColor: '#fff',
+        },
     },
     token: {
         // font
