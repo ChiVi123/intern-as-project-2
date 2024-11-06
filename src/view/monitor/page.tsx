@@ -1,8 +1,10 @@
+import { PlusOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import { Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Select as StyledSelect } from '~components';
+import { Button, Select as StyledSelect } from '~components';
 import { designToken } from '~core';
 import { ChevronDownSolidIcon } from '~icons';
 
@@ -97,6 +99,26 @@ const columns: TableColumnsType<DataType> = [
         dataIndex: 'service',
         key: 'service',
     },
+    {
+        title: '',
+        dataIndex: 'id',
+        key: 'monitor-detail',
+        render: (value) => (
+            <Link to={`/monitor/${value}`} style={{ textDecoration: 'underline', color: designToken.colorLink }}>
+                Chi tiết
+            </Link>
+        ),
+    },
+    {
+        title: '',
+        dataIndex: 'id',
+        key: 'monitor-detail',
+        render: (value) => (
+            <Link to={`/monitor/edit/${value}`} style={{ textDecoration: 'underline', color: designToken.colorLink }}>
+                Cập nhật
+            </Link>
+        ),
+    },
 ];
 
 const styledFormItem = css({
@@ -171,6 +193,35 @@ function MonitorPage() {
                     },
                 }}
             />
+
+            <Link to='/monitor/add'>
+                <div
+                    css={{
+                        position: 'absolute',
+                        top: 244,
+                        right: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        maxWidth: 80,
+                        paddingBlock: 12,
+                        paddingInline: 4,
+                        backgroundColor: designToken['orange-50'],
+                        borderRadius: '8px 0 0 8px',
+                        textAlign: 'center',
+                        zIndex: 1,
+                    }}
+                >
+                    <Button
+                        variant='solid'
+                        aria-label='add new monitor'
+                        style={{ minWidth: 28, height: 28, marginBottom: 4 }}
+                    >
+                        <PlusOutlined />
+                    </Button>
+                    <span style={{ color: designToken['orange-500'] }}>Thêm thiết bị</span>
+                </div>
+            </Link>
         </>
     );
 }

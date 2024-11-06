@@ -1,5 +1,6 @@
 import { DatePicker, Form, Input, Select, Table, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Select as StyledSelect } from '~components';
 import { designToken } from '~core';
@@ -53,6 +54,26 @@ const columns: TableColumnsType<DataType> = [
                 </>
             );
         },
+    },
+    {
+        title: '',
+        dataIndex: 'id',
+        key: 'service-detail',
+        render: (value) => (
+            <Link to={`/service/${value}`} style={{ textDecoration: 'underline', color: designToken.colorLink }}>
+                Chi tiết
+            </Link>
+        ),
+    },
+    {
+        title: '',
+        dataIndex: 'id',
+        key: 'service-detail',
+        render: (value) => (
+            <Link to={`/service/edit/${value}`} style={{ textDecoration: 'underline', color: designToken.colorLink }}>
+                Cập nhật
+            </Link>
+        ),
     },
 ];
 
