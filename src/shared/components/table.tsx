@@ -36,7 +36,7 @@ function Table<T>({ columns, dataSource, defaultPageSize = 9 }: ITableProps<T>) 
             dataSource={dataSource}
             bordered
             rowHoverable={false}
-            pagination={{ defaultPageSize, showSizeChanger: false, itemRender }}
+            pagination={{ defaultPageSize, showSizeChanger: false, hideOnSinglePage: true, itemRender }}
             rowKey='id'
             css={{
                 marginTop: 16,
