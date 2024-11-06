@@ -1,23 +1,17 @@
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
+import { DocumentData, QuerySnapshot } from 'firebase/firestore';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
-import { designToken } from '~core';
+import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
+import { IServiceEntity } from '~modules/service';
 
-interface DataType {
-    id: string;
-    name: string;
-    description: string;
-    actionStatus: string;
-}
-const randomNumber = (to: number) => Math.floor(Math.random() * to);
-const names = ['Fannie', 'Derrick', 'Bill', 'Edith', 'Myrtle', 'Jorge', 'Tommy', 'Tom', 'Alvin', 'Fannie'];
-const actionStatuses = ['Hoạt động', 'Ngưng hoạt động'];
+type ResponseSuccess = ResponseRepo<QuerySnapshot<IServiceEntity, DocumentData>>;
 
-const columns: TableColumnsType<DataType> = [
+const columns: TableColumnsType<IServiceEntity> = [
     {
         title: 'Mã thiết bị',
         dataIndex: 'id',
@@ -35,9 +29,9 @@ const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Trạng thái hoạt động',
-        dataIndex: 'actionStatus',
-        key: 'actionStatus',
-        render: (value: string) => {
+        dataIndex: 'status',
+        key: 'status',
+        render: ({ label, value }: { label: string; value: string }) => {
             return (
                 <>
                     <span
@@ -47,10 +41,10 @@ const columns: TableColumnsType<DataType> = [
                             height: 8,
                             marginRight: 4,
                             borderRadius: '100%',
-                            backgroundColor: value === 'Hoạt động' ? designToken.colorSuccess : '#ec3740',
+                            backgroundColor: value === 'running' ? designToken.colorSuccess : '#ec3740',
                         }}
                     ></span>
-                    {value}
+                    {label}
                 </>
             );
         },
@@ -78,16 +72,19 @@ const columns: TableColumnsType<DataType> = [
 ];
 
 function ServicePage() {
-    const dataSource = useMemo(
-        () =>
-            Array.from<DataType>({ length: 80 }).map<DataType>((_, i) => ({
-                id: 'KIO_0' + i,
-                name: names[randomNumber(names.length)],
-                actionStatus: actionStatuses[randomNumber(actionStatuses.length)],
-                description: 'Mô tả dịch vụ ' + i,
-            })),
-        [],
-    );
+    const loader = useLoaderData() as ResponseSuccess | ResponseErrorRepo;
+    const dataSource = useMemo<Array<IServiceEntity>>(() => {
+        if (loader instanceof ResponseErrorRepo) {
+            return [];
+        }
+
+        if (!loader.data) {
+            return [];
+        }
+
+        return loader.data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    }, [loader]);
+
     return (
         <>
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
