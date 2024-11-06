@@ -1,12 +1,10 @@
-import { PlusOutlined } from '@ant-design/icons';
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 
-import { Button, Select as StyledSelect, Table } from '~components';
+import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
-import { ChevronDownSolidIcon } from '~icons';
+import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 
 interface DataType {
     id: string;
@@ -177,34 +175,7 @@ function QueueingPage() {
 
             <Table dataSource={dataSource} columns={columns} />
 
-            <Link to='/queueing/add'>
-                <div
-                    css={{
-                        position: 'absolute',
-                        top: 244,
-                        right: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        maxWidth: 80,
-                        paddingBlock: 12,
-                        paddingInline: 4,
-                        backgroundColor: designToken['orange-50'],
-                        borderRadius: '8px 0 0 8px',
-                        textAlign: 'center',
-                        zIndex: 1,
-                    }}
-                >
-                    <Button
-                        variant='solid'
-                        aria-label='add new monitor'
-                        style={{ minWidth: 28, height: 28, marginBottom: 4 }}
-                    >
-                        <PlusOutlined />
-                    </Button>
-                    <span style={{ color: designToken['orange-500'] }}>Cấp số mới</span>
-                </div>
-            </Link>
+            <LinkFloatAside to='/queueing/add' title='Cấp số mới' icon={AddSquareSolidIcon} />
         </>
     );
 }

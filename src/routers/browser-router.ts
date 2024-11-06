@@ -23,6 +23,7 @@ import editUserRouter from '~view/setting/user-management/edit/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
+import addServiceRouter from '~view/service/add/router';
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -45,7 +46,7 @@ export const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/service',
-                        children: [serviceRouter, serviceDetailRouter, editServiceRouter],
+                        children: [serviceRouter, addServiceRouter, serviceDetailRouter, editServiceRouter],
                     },
                     {
                         path: '/queueing',

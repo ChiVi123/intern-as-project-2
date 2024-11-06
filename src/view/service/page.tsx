@@ -2,10 +2,10 @@ import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'a
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Select as StyledSelect, Table } from '~components';
+import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
-import { ChevronDownSolidIcon } from '~icons';
+import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 
 interface DataType {
     id: string;
@@ -122,6 +122,8 @@ function ServicePage() {
             </Form>
 
             <Table dataSource={dataSource} columns={columns} />
+
+            <LinkFloatAside to='/service/add' title='Thêm dịch vụ' icon={AddSquareSolidIcon} />
         </>
     );
 }

@@ -1,3 +1,4 @@
+export { default as AddSquareSolidIcon } from './add-square-solid';
 export { default as CameraOutlinedIcon } from './camera-outlined';
 export { default as ChevronDownSolidIcon } from './chevron-down-solid';
 export { default as FileChartOutlinedIcon } from './file-chart-outlined';
