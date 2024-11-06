@@ -1,8 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
-import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import { Button, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
@@ -14,25 +13,8 @@ interface DataType {
     ipAddress: string;
     actionStatus: string;
     connectStatus: string;
-    service: string;
+    services: string;
 }
-
-const randomNumber = (to: number) => Math.floor(Math.random() * to);
-const names = ['Fannie', 'Derrick', 'Bill', 'Edith', 'Myrtle', 'Jorge', 'Tommy', 'Tom', 'Alvin', 'Fannie'];
-const ipAddresses = [
-    '15.143.49.175',
-    '222.91.172.155',
-    '144.83.164.161',
-    '159.229.156.98',
-    '7.209.77.198',
-    '171.233.77.200',
-    '44.200.5.58',
-    '245.88.151.135',
-    '239.242.208.170',
-    '177.50.65.135',
-];
-const actionStatuses = ['Hoạt động', 'Ngưng hoạt động'];
-const connectStatuses = ['Kết nối', 'Mất kết nối'];
 
 const columns: TableColumnsType<DataType> = [
     {
@@ -58,7 +40,7 @@ const columns: TableColumnsType<DataType> = [
             return (
                 <>
                     <span
-                        css={{
+                        style={{
                             display: 'inline-block',
                             width: 8,
                             height: 8,
@@ -80,7 +62,7 @@ const columns: TableColumnsType<DataType> = [
             return (
                 <>
                     <span
-                        css={{
+                        style={{
                             display: 'inline-block',
                             width: 8,
                             height: 8,
@@ -96,8 +78,8 @@ const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Dịch vụ sử dụng',
-        dataIndex: 'service',
-        key: 'service',
+        dataIndex: 'services',
+        key: 'services',
     },
     {
         title: '',
@@ -126,18 +108,8 @@ const styledFormItem = css({
 });
 
 function MonitorPage() {
-    const dataSource = useMemo(
-        () =>
-            Array.from<DataType>({ length: 80 }).map<DataType>((_, i) => ({
-                id: 'KIO_0' + i,
-                name: names[randomNumber(names.length)],
-                ipAddress: ipAddresses[randomNumber(ipAddresses.length)],
-                actionStatus: actionStatuses[randomNumber(actionStatuses.length)],
-                connectStatus: connectStatuses[randomNumber(connectStatuses.length)],
-                service: 'Khám tim mạch, Khám mắt...',
-            })),
-        [],
-    );
+    const loader = useLoaderData() as DataType[];
+
     return (
         <>
             <Typography.Title level={3}>Danh sách thiết bị</Typography.Title>
@@ -180,7 +152,7 @@ function MonitorPage() {
                 </Form.Item>
             </Form>
 
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={loader} columns={columns} />
 
             <Link to='/monitor/add'>
                 <div

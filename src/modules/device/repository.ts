@@ -1,4 +1,4 @@
-import { collection, CollectionReference, doc, DocumentData, setDoc } from 'firebase/firestore';
+import { collection, CollectionReference, doc, DocumentData, getDocs, setDoc } from 'firebase/firestore';
 import { firebaseStore } from '~config';
 import { ResponseErrorRepo, ResponseRepo } from '~core';
 import { IDeviceEntity } from './entity';
@@ -13,5 +13,13 @@ export const addDevice = async (data: IDeviceEntity) => {
         return new ResponseRepo('Thêm thiết bị thành công');
     } catch (error) {
         return new ResponseErrorRepo('Thêm thiết bị thất bại', error);
+    }
+};
+export const getAllDevice = async () => {
+    try {
+        const res = await getDocs(deviceCollection);
+        return new ResponseRepo('Đã lấy danh sách thiết bị', res);
+    } catch (error) {
+        return new ResponseErrorRepo('Không thể lấy danh sách thiết bị', error);
     }
 };
