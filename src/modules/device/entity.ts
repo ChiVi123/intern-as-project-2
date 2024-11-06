@@ -10,4 +10,6 @@ export interface IDeviceEntity {
     ipAddress: string;
     services?: IServiceEntity[];
     serviceRefs: DocumentReference<IServiceEntity>[];
+    actionStatus: { label: string; value: string };
+    connectStatus: { label: string; value: string };
 }

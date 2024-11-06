@@ -82,7 +82,11 @@ function AddMonitorPage() {
             data.serviceRefs[index] = doc(firebaseStore, 'service', serviceId) as DocumentReference<IServiceEntity>;
         });
 
-        const result = await addDevice(data);
+        const result = await addDevice({
+            ...data,
+            actionStatus: { label: 'Hoạt động', value: 'running' },
+            connectStatus: { label: 'Kết nối', value: 'connecting' },
+        });
         messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
     };
 

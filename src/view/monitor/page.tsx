@@ -36,7 +36,7 @@ const columns: TableColumnsType<DataType> = [
         title: 'Trạng thái hoạt động',
         dataIndex: 'actionStatus',
         key: 'actionStatus',
-        render: (value: string) => {
+        render: (obj: { label: string; value: string }) => {
             return (
                 <>
                     <span
@@ -46,10 +46,10 @@ const columns: TableColumnsType<DataType> = [
                             height: 8,
                             marginRight: 4,
                             borderRadius: '100%',
-                            backgroundColor: value === 'Hoạt động' ? designToken.colorSuccess : '#ec3740',
+                            backgroundColor: obj?.value === 'running' ? designToken.colorSuccess : '#ec3740',
                         }}
                     ></span>
-                    {value}
+                    {obj?.label}
                 </>
             );
         },
@@ -58,7 +58,7 @@ const columns: TableColumnsType<DataType> = [
         title: 'Trạng thái kết nối',
         dataIndex: 'connectStatus',
         key: 'connectStatus',
-        render: (value: string) => {
+        render: (obj: { label: string; value: string }) => {
             return (
                 <>
                     <span
@@ -68,10 +68,10 @@ const columns: TableColumnsType<DataType> = [
                             height: 8,
                             marginRight: 4,
                             borderRadius: '100%',
-                            backgroundColor: value === 'Kết nối' ? designToken.colorSuccess : '#ec3740',
+                            backgroundColor: obj?.value === 'connecting' ? designToken.colorSuccess : '#ec3740',
                         }}
                     ></span>
-                    {value}
+                    {obj?.label}
                 </>
             );
         },
