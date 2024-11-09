@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { Button } from '~components';
-import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
+import { designToken } from '~core';
 import { cssHeading, cssPaper } from '~css-emotion';
 import { editServiceById, IServiceEntity } from '~modules/service';
 
@@ -18,36 +18,18 @@ type ServiceField = {
         reset: boolean;
     };
 };
-const defaultValues: ServiceField = {
-    id: '',
-    name: '',
-    description: '',
-    rule: {
-        autoIncrement: { active: false, start: 1, end: 9999 },
-        prefix: { active: false, value: '0001' },
-        suffix: { active: false, value: '0001' },
-        reset: false,
-    },
-};
 
 function EditServicePage() {
     const [messageApi, contextHolder] = message.useMessage();
-    const loader = useLoaderData() as ResponseRepo<IServiceEntity> | ResponseErrorRepo;
+    const loader = useLoaderData() as IServiceEntity;
     const initialValues = useMemo<ServiceField>(() => {
-        if (loader instanceof ResponseErrorRepo) {
-            return defaultValues;
-        }
-        if (!loader.data) {
-            return defaultValues;
-        }
-        const { data } = loader;
         const formData: ServiceField = {
-            ...data,
+            ...loader,
             rule: {
-                autoIncrement: { ...data.rule.autoIncrement, active: true },
-                prefix: { value: data.rule.prefix, active: true },
-                suffix: { value: data.rule.suffix, active: true },
-                reset: data.rule.reset,
+                autoIncrement: { ...loader.rule.autoIncrement, active: true },
+                prefix: { value: loader.rule.prefix, active: true },
+                suffix: { value: loader.rule.suffix, active: true },
+                reset: loader.rule.reset,
             },
         };
         return formData;

@@ -6,17 +6,10 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { Button, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { ChevronDownSolidIcon } from '~icons';
+import { IDeviceEntity } from '~modules/device';
+import { IServiceEntity } from '~modules/service';
 
-interface DataType {
-    id: string;
-    name: string;
-    ipAddress: string;
-    actionStatus: string;
-    connectStatus: string;
-    services: string;
-}
-
-const columns: TableColumnsType<DataType> = [
+const columns: TableColumnsType<IDeviceEntity> = [
     {
         title: 'Mã thiết bị',
         dataIndex: 'id',
@@ -80,6 +73,7 @@ const columns: TableColumnsType<DataType> = [
         title: 'Dịch vụ sử dụng',
         dataIndex: 'services',
         key: 'services',
+        render: (value: IServiceEntity[]) => value.map((item) => item.name).join(', '),
     },
     {
         title: '',
@@ -108,7 +102,7 @@ const styledFormItem = css({
 });
 
 function MonitorPage() {
-    const loader = useLoaderData() as DataType[];
+    const loader = useLoaderData() as IDeviceEntity[];
 
     return (
         <>

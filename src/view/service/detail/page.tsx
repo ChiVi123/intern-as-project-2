@@ -1,8 +1,9 @@
 import { Col, DatePicker, Flex, Form, Input, InputNumber, Row, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
+
 import { Select as StyledSelect, Table } from '~components';
-import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
+import { designToken } from '~core';
 import { cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
 import { IServiceEntity } from '~modules/service';
@@ -50,21 +51,8 @@ const columns: TableColumnsType<DataType> = [
     },
 ];
 
-const defaultValues: IServiceEntity = {
-    id: '',
-    name: '',
-    description: '',
-    rule: {
-        autoIncrement: { start: 1, end: 9999 },
-        prefix: '',
-        suffix: '',
-        reset: false,
-    },
-    status: { label: '', value: '' },
-};
-
 function ServiceDetailPage() {
-    const loader = useLoaderData() as ResponseRepo<IServiceEntity> | ResponseErrorRepo;
+    const loader = useLoaderData() as IServiceEntity;
     const dataSource = useMemo(
         () =>
             Array.from<DataType>({ length: 60 }).map<DataType>((_, i) => ({
@@ -73,16 +61,6 @@ function ServiceDetailPage() {
             })),
         [],
     );
-    const service = useMemo(() => {
-        if (loader instanceof ResponseErrorRepo) {
-            return defaultValues;
-        }
-        if (!loader.data) {
-            return defaultValues;
-        }
-
-        return loader.data;
-    }, [loader]);
 
     return (
         <>
@@ -96,15 +74,15 @@ function ServiceDetailPage() {
                     <Row gutter={[0, 12]}>
                         <Col span={24}>
                             <Typography.Text strong>Mã dịch vụ: </Typography.Text>
-                            <Typography.Text>{service.id}</Typography.Text>
+                            <Typography.Text>{loader.id}</Typography.Text>
                         </Col>
                         <Col span={24}>
                             <Typography.Text strong>Tên dịch vụ: </Typography.Text>
-                            <Typography.Text>{service.name}</Typography.Text>
+                            <Typography.Text>{loader.name}</Typography.Text>
                         </Col>
                         <Col span={24}>
                             <Typography.Text strong>Mô tả: </Typography.Text>
-                            <Typography.Text>{service.description}</Typography.Text>
+                            <Typography.Text>{loader.description}</Typography.Text>
                         </Col>
                     </Row>
 
@@ -121,14 +99,14 @@ function ServiceDetailPage() {
                                 <Col span={16}>
                                     <Flex align='center' gap={4}>
                                         <InputNumber
-                                            defaultValue={service.rule.autoIncrement.start}
+                                            defaultValue={loader.rule.autoIncrement.start}
                                             formatter={(value) => value?.toString().padStart(4, '0') || ''}
                                             style={{ flex: 1 }}
                                             onWheel={(e) => e.currentTarget.blur()}
                                         />
                                         <Typography.Text>đến</Typography.Text>
                                         <InputNumber
-                                            defaultValue={service.rule.autoIncrement.end}
+                                            defaultValue={loader.rule.autoIncrement.end}
                                             formatter={(value) => value?.toString().padStart(4, '0') || ''}
                                             style={{ flex: 1 }}
                                             onWheel={(e) => e.currentTarget.blur()}
@@ -144,17 +122,17 @@ function ServiceDetailPage() {
                                     <Typography.Text strong>Prefix: </Typography.Text>
                                 </Col>
                                 <Col span={16}>
-                                    <Input defaultValue={service.rule.prefix} style={{ width: 60 }} />
+                                    <Input defaultValue={loader.rule.prefix} style={{ width: 60 }} />
                                 </Col>
                             </Row>
                         </Col>
 
                         <Col span={24}>
-                            {service.rule.reset && (
+                            {loader.rule.reset && (
                                 <>
                                     <Typography.Text strong>Reset mỗi ngày</Typography.Text>
                                     <Typography.Paragraph>
-                                        Ví dụ: {service.rule.prefix}-{service.rule.suffix}
+                                        Ví dụ: {loader.rule.prefix}-{loader.rule.suffix}
                                     </Typography.Paragraph>
                                 </>
                             )}

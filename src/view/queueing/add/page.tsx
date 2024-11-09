@@ -2,13 +2,13 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Flex, Form, FormProps, message, Modal, ModalProps, Typography } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
-import { doc, DocumentReference, QuerySnapshot, Timestamp } from 'firebase/firestore';
+import { doc, DocumentReference, Timestamp } from 'firebase/firestore';
 import { useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { Button, Select as StyledSelect } from '~components';
 import { firebaseStore } from '~config';
-import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
+import { designToken, ResponseErrorRepo } from '~core';
 import { cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
 import { addQueueing, getCountByServiceRef, IQueueingEntity } from '~modules/queueing';
@@ -35,27 +35,17 @@ const cssFooterContent = css({
 
 function AddQueuePage() {
     const [messageApi, contextHolder] = message.useMessage();
-    const loader = useLoaderData() as ResponseRepo<QuerySnapshot<IServiceEntity>> | ResponseErrorRepo;
+    const loaderService = useLoaderData() as IServiceEntity[];
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [queueingModal, setQueueingModal] = useState<Omit<IQueueingEntity, 'id'>>();
-    const services = useMemo(() => {
-        if (loader instanceof ResponseErrorRepo) {
-            return [];
-        }
-        if (!loader.data) {
-            return [];
-        }
-
-        return loader.data.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IServiceEntity));
-    }, [loader]);
+    const [queueingModal, setQueueingModal] = useState<Omit<IQueueingEntity, 'id'> & { serviceName: string }>();
     const options = useMemo(() => {
-        return services.map((item) => ({ label: item.name, value: item.id } as DefaultOptionType));
-    }, [services]);
+        return loaderService.map((item) => ({ label: item.name, value: item.id } as DefaultOptionType));
+    }, [loaderService]);
 
     const handleSubmit: FormProps<DataType>['onFinish'] = async ({ serviceId }) => {
         const serviceRef = doc(firebaseStore, 'service', serviceId) as DocumentReference<IServiceEntity>;
         const queueingCountResult = await getCountByServiceRef(serviceRef);
-        const service = services.find((item) => item.id === serviceId);
+        const service = loaderService.find((item) => item.id === serviceId);
         if (!service) {
             return;
         }
@@ -68,8 +58,7 @@ function AddQueuePage() {
         const suffix = (queueingCountResult.data! + 1).toString().padStart(4, '0');
         expiredDate.setHours(createdDate.getHours() + 8);
         const queueing: Omit<IQueueingEntity, 'id'> = {
-            name: 'Nguyễn Thị Dung',
-            serviceName: service.name,
+            guestName: 'Nguyễn Thị Dung',
             ordinalNumber: Number(service.rule.prefix + suffix),
             device: 'Kiosk',
             phoneNumber: '0948523623',
@@ -92,7 +81,7 @@ function AddQueuePage() {
             return;
         }
 
-        setQueueingModal(queueing);
+        setQueueingModal({ ...queueing, serviceName: service.name });
         setIsModalOpen(true);
     };
     const handleCancel = () => {

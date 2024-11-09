@@ -1,16 +1,19 @@
+import { doc, DocumentReference } from 'firebase/firestore';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { firebaseStore } from '~config';
 import { ResponseErrorRepo } from '~core';
-import { getDeviceById } from '~modules/device';
+import { getDeviceById, IDeviceEntity } from '~modules/device';
+import { getAllServiceByDeviceRef } from '~modules/service-device';
 
 type DeviceField = {
     id: string;
-    type: { label: string; value: string };
+    type: string;
     name: string;
     usernameDevice: string;
     passwordDevice: string;
     ipAddress: string;
-    services: string[];
+    serviceIds: string[];
 };
 const defaultDevice: DeviceField = {
     id: '',
@@ -18,27 +21,27 @@ const defaultDevice: DeviceField = {
     ipAddress: '',
     passwordDevice: '',
     usernameDevice: '',
-    type: { label: '', value: '' },
-    services: [],
+    type: '',
+    serviceIds: [],
 };
 
 const editMonitorRouter: RouteObject = {
     path: 'edit/:id',
     Component: lazy(() => import('./page')),
     loader: async ({ params: { id } }): Promise<DeviceField> => {
-        const res = await getDeviceById(id || '');
+        const deviceRes = await getDeviceById(id || '');
 
-        if (res instanceof ResponseErrorRepo) {
+        if (deviceRes instanceof ResponseErrorRepo) {
             return defaultDevice;
         }
-        if (!res.data) {
+        const deviceRef = doc(firebaseStore, 'device', deviceRes.data!.id) as DocumentReference<IDeviceEntity>;
+        const serviceRes = await getAllServiceByDeviceRef(deviceRef);
+
+        if (serviceRes instanceof ResponseErrorRepo) {
             return defaultDevice;
         }
-        if (!res.data.exists()) {
-            return defaultDevice;
-        }
-        const { serviceRefs, ...data } = res.data.data();
-        return { ...data, id: res.data.id, services: serviceRefs.map((ref) => ref.id) };
+
+        return { ...deviceRes.data!, serviceIds: serviceRes.data!.map((item) => item.service.id) };
     },
 };
 

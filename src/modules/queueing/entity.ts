@@ -3,9 +3,8 @@ import { IServiceEntity } from '~modules/service';
 
 export interface IQueueingEntity {
     id: string;
-    name: string;
+    guestName: string;
     email: string;
-    serviceName: string;
     phoneNumber: string;
     device: string;
     status: string;

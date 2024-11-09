@@ -1,15 +1,11 @@
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
-import { DocumentData, QuerySnapshot } from 'firebase/firestore';
-import { useMemo } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 
 import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
-import { designToken, ResponseErrorRepo, ResponseRepo } from '~core';
+import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 import { IServiceEntity } from '~modules/service';
-
-type ResponseSuccess = ResponseRepo<QuerySnapshot<IServiceEntity, DocumentData>>;
 
 const columns: TableColumnsType<IServiceEntity> = [
     {
@@ -72,18 +68,7 @@ const columns: TableColumnsType<IServiceEntity> = [
 ];
 
 function ServicePage() {
-    const loader = useLoaderData() as ResponseSuccess | ResponseErrorRepo;
-    const dataSource = useMemo<Array<IServiceEntity>>(() => {
-        if (loader instanceof ResponseErrorRepo) {
-            return [];
-        }
-
-        if (!loader.data) {
-            return [];
-        }
-
-        return loader.data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    }, [loader]);
+    const loader = useLoaderData() as IServiceEntity[];
 
     return (
         <>
@@ -118,7 +103,7 @@ function ServicePage() {
                 </Form.Item>
             </Form>
 
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={loader} columns={columns} />
 
             <LinkFloatAside to='/service/add' title='Thêm dịch vụ' icon={AddSquareSolidIcon} />
         </>

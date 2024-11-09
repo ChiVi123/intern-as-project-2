@@ -11,18 +11,22 @@ import { firebaseStore } from '~config';
 import { designToken, ResponseErrorRepo } from '~core';
 import { cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon, XMarkIcon } from '~icons';
-import { editDevice } from '~modules/device';
-import { getAllService, IServiceEntity } from '~modules/service';
+import { editDevice, IDeviceEntity } from '~modules/device';
+import { getAllService } from '~modules/service';
+import {
+    addAllServiceToDevice,
+    deleteServiceDeviceByIds,
+    getAllServiceDeviceByDeviceRef,
+} from '~modules/service-device';
 
 type DeviceField = {
     id: string;
-    type: { label: string; value: string };
+    type: string;
     name: string;
     usernameDevice: string;
     passwordDevice: string;
     ipAddress: string;
-    services: string[];
-    serviceRefs: DocumentReference<IServiceEntity>[];
+    serviceIds: string[];
 };
 
 type TagRender = SelectProps['tagRender'];
@@ -76,22 +80,37 @@ function EditMonitorPage() {
             if (!response.data) {
                 return;
             }
-            setOptions(response.data.docs.map((doc) => ({ label: doc.data().name, value: doc.id })));
+            setOptions(response.data!.map((item) => ({ label: item.name, value: item.id })));
         })();
     }, []);
 
-    const handleSubmit: FormProps<DeviceField>['onFinish'] = async ({ id, services, ...data }) => {
-        data.serviceRefs = new Array<DocumentReference<IServiceEntity>>(services.length);
-        services.forEach((serviceId, index) => {
-            data.serviceRefs[index] = doc(firebaseStore, 'service', serviceId) as DocumentReference<IServiceEntity>;
-        });
+    const handleSubmit: FormProps<DeviceField>['onFinish'] = async ({ id, serviceIds, ...data }) => {
+        const deviceRef = doc(firebaseStore, 'device', id) as DocumentReference<IDeviceEntity>;
+        const allServiceDeviceResult = await getAllServiceDeviceByDeviceRef(deviceRef);
+        if (allServiceDeviceResult instanceof ResponseErrorRepo) {
+            messageApi.open({ type: 'error', content: allServiceDeviceResult.message });
+            return;
+        }
 
-        const result = await editDevice(id, {
+        const removeServiceResult = await deleteServiceDeviceByIds(allServiceDeviceResult.data!.map((item) => item.id));
+        if (removeServiceResult instanceof ResponseErrorRepo) {
+            messageApi.open({ type: 'error', content: removeServiceResult.message });
+            return;
+        }
+
+        const deviceResult = await editDevice(id, {
             ...data,
             actionStatus: { label: 'Hoạt động', value: 'running' },
             connectStatus: { label: 'Kết nối', value: 'connecting' },
         });
-        messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
+        const serviceDeviceResult = await addAllServiceToDevice(id, serviceIds);
+        console.log(serviceDeviceResult);
+
+        if (serviceDeviceResult instanceof ResponseErrorRepo) {
+            console.log(serviceDeviceResult.error);
+        }
+
+        messageApi.open({ type: deviceResult.success ? 'success' : 'error', content: deviceResult.message });
     };
 
     return (
@@ -177,7 +196,13 @@ function EditMonitorPage() {
                     </Form.Item>
 
                     {/* row4 */}
-                    <Form.Item<DeviceField> layout='vertical' label='Dịch vụ sử dụng:' name='services' required>
+                    <Form.Item<DeviceField>
+                        layout='vertical'
+                        label='Dịch vụ sử dụng:'
+                        name='serviceIds'
+                        required
+                        rules={[{ required: true, message: 'Vui lòng thêm dịch vụ' }]}
+                    >
                         <Select
                             mode='multiple'
                             style={{ width: 'calc(100% - 24px)' }}
@@ -188,7 +213,7 @@ function EditMonitorPage() {
                         />
                     </Form.Item>
 
-                    <div css={{ display: 'flex', gap: 4, alignItems: 'center', marginTop: 54 }}>
+                    <div css={{ display: 'flex', gap: 4, alignItems: 'center', marginTop: 82 }}>
                         <span css={{ fontFamily: 'SimSun, sans-serif', color: designToken['colorError'] }}>*</span>
                         <Typography.Text>Là trường thông tin bắt buộc</Typography.Text>
                     </div>

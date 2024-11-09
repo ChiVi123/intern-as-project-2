@@ -1,5 +1,6 @@
 import { Col, Row, Typography } from 'antd';
 import { useLoaderData } from 'react-router-dom';
+
 import { cssHeading, cssPaper } from '~css-emotion';
 import { IDeviceEntity } from '~modules/device';
 
@@ -21,7 +22,7 @@ function MonitorPage() {
                     </Col>
                     <Col span={12}>
                         <Typography.Text strong>Loại thiết bị: </Typography.Text>
-                        <Typography.Text>{typeof loader.type !== 'object' && loader.type}</Typography.Text>
+                        <Typography.Text>{loader.type}</Typography.Text>
                     </Col>
 
                     <Col span={12}>

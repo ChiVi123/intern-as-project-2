@@ -2,25 +2,23 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Form, FormProps, Input, message, Select, Tag, Typography } from 'antd';
 import { DefaultOptionType, SelectProps } from 'antd/es/select';
-import { doc, DocumentReference } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import { Button, Select as StyledSelect } from '~components';
-import { firebaseStore } from '~config';
 import { designToken, ResponseErrorRepo } from '~core';
 import { ChevronDownSolidIcon, XMarkIcon } from '~icons';
 import { addDevice } from '~modules/device';
-import { getAllService, IServiceEntity } from '~modules/service';
+import { getAllService } from '~modules/service';
+import { addAllServiceToDevice } from '~modules/service-device';
 
 type DeviceField = {
     id: string;
-    type: { label: string; value: string };
+    type: string;
     name: string;
     usernameDevice: string;
     passwordDevice: string;
     ipAddress: string;
-    services: string[];
-    serviceRefs: DocumentReference<IServiceEntity>[];
+    serviceIds: string[];
 };
 type TagRender = SelectProps['tagRender'];
 
@@ -69,25 +67,21 @@ function AddMonitorPage() {
             if (response instanceof ResponseErrorRepo) {
                 return;
             }
-            if (!response.data) {
-                return;
-            }
-            setOptions(response.data.docs.map((doc) => ({ label: doc.data().name, value: doc.id })));
+            setOptions(response.data!.map((item) => ({ label: item.name, value: item.id })));
         })();
     }, []);
 
-    const handleSubmit: FormProps<DeviceField>['onFinish'] = async ({ services, ...data }) => {
-        data.serviceRefs = new Array<DocumentReference<IServiceEntity>>(services.length);
-        services.forEach((serviceId, index) => {
-            data.serviceRefs[index] = doc(firebaseStore, 'service', serviceId) as DocumentReference<IServiceEntity>;
-        });
-
-        const result = await addDevice({
+    const handleSubmit: FormProps<DeviceField>['onFinish'] = async ({ serviceIds, ...data }) => {
+        const addDeviceResult = await addDevice({
             ...data,
             actionStatus: { label: 'Hoạt động', value: 'running' },
             connectStatus: { label: 'Kết nối', value: 'connecting' },
         });
-        messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
+
+        const addServiceDeviceResult = await addAllServiceToDevice(data.id, serviceIds);
+        console.log(addServiceDeviceResult);
+
+        messageApi.open({ type: addDeviceResult.success ? 'success' : 'error', content: addDeviceResult.message });
     };
 
     return (
@@ -106,7 +100,20 @@ function AddMonitorPage() {
                     Thông tin thiết bị
                 </Typography.Title>
 
-                <Form form={form} name='add_device_form' onFinish={handleSubmit}>
+                <Form
+                    form={form}
+                    name='add_device_form'
+                    initialValues={{
+                        id: 'Kio_01',
+                        type: 'kiosk',
+                        name: 'Kiosk',
+                        usernameDevice: 'Linhkyo011',
+                        passwordDevice: '123456789',
+                        ipAddress: '128.172.308',
+                        serviceIds: ['103', '209'],
+                    }}
+                    onFinish={handleSubmit}
+                >
                     {/* row1 */}
                     <Form.Item>
                         <Form.Item<DeviceField>
@@ -180,7 +187,7 @@ function AddMonitorPage() {
                     </Form.Item>
 
                     {/* row4 */}
-                    <Form.Item<DeviceField> layout='vertical' label='Dịch vụ sử dụng:' name='services' required>
+                    <Form.Item<DeviceField> layout='vertical' label='Dịch vụ sử dụng:' name='serviceIds' required>
                         <Select
                             mode='multiple'
                             style={{ width: 'calc(100% - 24px)' }}

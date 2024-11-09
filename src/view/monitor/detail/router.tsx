@@ -1,9 +1,11 @@
-import { getDoc } from 'firebase/firestore';
+import { doc, DocumentReference } from 'firebase/firestore';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { firebaseStore } from '~config';
 import { ResponseErrorRepo } from '~core';
 import { getDeviceById, IDeviceEntity } from '~modules/device';
 import { IServiceEntity } from '~modules/service';
+import { getAllServiceByDeviceRef } from '~modules/service-device';
 
 const defaultDevice: IDeviceEntity = {
     id: '',
@@ -11,36 +13,29 @@ const defaultDevice: IDeviceEntity = {
     ipAddress: '',
     passwordDevice: '',
     usernameDevice: '',
-    type: { label: '', value: '' },
+    type: '',
     actionStatus: { label: '', value: '' },
     connectStatus: { label: '', value: '' },
     services: [],
-    serviceRefs: [],
 };
 
 const monitorDetailRouter: RouteObject = {
     path: ':id',
     Component: lazy(() => import('./page')),
     loader: async ({ params: { id } }): Promise<IDeviceEntity> => {
-        const res = await getDeviceById(id || '');
+        const deviceRes = await getDeviceById(id || '');
 
-        if (res instanceof ResponseErrorRepo) {
+        if (deviceRes instanceof ResponseErrorRepo) {
             return defaultDevice;
         }
-        if (!res.data) {
+        const deviceRef = doc(firebaseStore, 'device', deviceRes.data!.id) as DocumentReference<IDeviceEntity>;
+        const serviceRes = await getAllServiceByDeviceRef(deviceRef);
+
+        if (serviceRes instanceof ResponseErrorRepo) {
             return defaultDevice;
         }
-        if (!res.data.exists()) {
-            return defaultDevice;
-        }
-        const data = res.data.data();
-        const services = await Promise.all(
-            data.serviceRefs.map(async (ref) => {
-                const service = await getDoc(ref);
-                return { ...service.data(), id: service.id } as IServiceEntity;
-            }),
-        );
-        return { ...data, id: res.data.id, services };
+
+        return { ...deviceRes.data!, services: serviceRes.data!.map((item) => item.service as IServiceEntity) };
     },
 };
 

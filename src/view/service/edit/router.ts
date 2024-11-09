@@ -1,11 +1,32 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { getServiceById } from '~modules/service';
+
+import { ResponseErrorRepo } from '~core';
+import { getServiceById, IServiceEntity } from '~modules/service';
+
+const defaultValues: IServiceEntity = {
+    id: '',
+    name: '',
+    description: '',
+    rule: {
+        autoIncrement: { start: 1, end: 9999 },
+        prefix: '0001',
+        suffix: '0001',
+        reset: false,
+    },
+    status: { label: 'Hoạt động', value: 'running' },
+};
 
 const editServiceRouter: RouteObject = {
     path: 'edit/:id',
     Component: lazy(() => import('./page')),
-    loader: async ({ params: { id } }) => getServiceById(id || ''),
+    loader: async ({ params: { id } }): Promise<IServiceEntity> => {
+        const res = await getServiceById(id || '');
+        if (res instanceof ResponseErrorRepo) {
+            return defaultValues;
+        }
+        return res.data!;
+    },
 };
 
 export default editServiceRouter;

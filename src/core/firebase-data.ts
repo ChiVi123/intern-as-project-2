@@ -71,7 +71,7 @@ export async function getDocsRefs<T = DocumentData>(
     const promise = [];
     for (const docData of docs) {
         for (const field of options.fields) {
-            promise.push(getDocData(docData[field as keyof T] as DocumentReference));
+            promise.push(getDocData(docData[field as keyof T] as DocumentReference, { idField: 'id' }));
         }
     }
 
