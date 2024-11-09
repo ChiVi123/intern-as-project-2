@@ -1,5 +1,4 @@
 import { Checkbox, Flex, Form, FormProps, Input, InputNumber, message, Typography } from 'antd';
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
@@ -33,7 +32,7 @@ const defaultValues: ServiceField = {
 
 function EditServicePage() {
     const [messageApi, contextHolder] = message.useMessage();
-    const loader = useLoaderData() as ResponseRepo<DocumentSnapshot<IServiceEntity, DocumentData>> | ResponseErrorRepo;
+    const loader = useLoaderData() as ResponseRepo<IServiceEntity> | ResponseErrorRepo;
     const initialValues = useMemo<ServiceField>(() => {
         if (loader instanceof ResponseErrorRepo) {
             return defaultValues;
@@ -41,15 +40,9 @@ function EditServicePage() {
         if (!loader.data) {
             return defaultValues;
         }
-        if (!loader.data.exists()) {
-            return defaultValues;
-        }
-
-        const data = loader.data.data();
+        const { data } = loader;
         const formData: ServiceField = {
-            id: loader.data.id,
-            name: data.name,
-            description: data.description,
+            ...data,
             rule: {
                 autoIncrement: { ...data.rule.autoIncrement, active: true },
                 prefix: { value: data.rule.prefix, active: true },

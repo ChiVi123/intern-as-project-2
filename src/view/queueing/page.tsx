@@ -1,84 +1,43 @@
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
-import { useMemo } from 'react';
+import { Timestamp } from 'firebase/firestore';
+import { useLoaderData } from 'react-router-dom';
 
 import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
 import { cssWidthInputFormSearch } from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
+import { IQueueingEntity } from '~modules/queueing';
+import { IServiceEntity } from '~modules/service';
+import { formatDate } from '~utils';
 
-interface DataType {
-    id: string;
-    guestName: string;
-    serviceName: string;
-    createdAt: string;
-    expiredAt: string;
-    status: string;
-    device: string;
-}
-
-const randomNumber = (to: number) => Math.floor(Math.random() * to);
-const generateRandomDate = (start: string, end: string) => {
-    const startDate = new Date(start).getTime();
-    const endDate = new Date(end).getTime();
-    const randomTime = startDate + Math.random() * (endDate - startDate);
-    return new Date(randomTime);
-};
-const formatDate = () =>
-    generateRandomDate('2024-01-01', '2024-12-31').toLocaleDateString('vi', {
-        hour: '2-digit',
-        minute: '2-digit',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
-
-const names = [
-    'Lê Huỳnh Ái Vân',
-    'Huỳnh Ái Vân',
-    'Lê Ái Vân',
-    'Nguyễn Ái Vân',
-    'Trần Thị Ái Vân',
-    'Lê Huỳnh Nghĩa',
-    'Lê Huỳnh Đức',
-    'Phạm Văn Mạnh',
-    'Lê Thị Cẩm Tiên',
-];
-const statuses = ['Đang chờ', 'Đã sử dụng', 'Bỏ qua'];
-const devices = ['Kiosk', 'Hệ thống'];
-const services = [
-    'Khám tim mạch',
-    'Khám sản - Phụ Khoa',
-    'Khám răng hàm mặt',
-    'Khám tai mũi họng',
-    'Khám hô hấp',
-    'Khám tổng quát  ',
-];
-
-const columns: TableColumnsType<DataType> = [
+const columns: TableColumnsType<IQueueingEntity> = [
     {
         title: 'STT',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'ordinalNumber',
+        key: 'ordinalNumber',
     },
     {
         title: 'Tên khách hàng',
-        dataIndex: 'guestName',
-        key: 'guestName',
+        dataIndex: 'name',
+        key: 'name',
     },
     {
         title: 'Tên dịch vụ ',
-        dataIndex: 'serviceName',
-        key: 'serviceName',
+        dataIndex: 'service',
+        key: 'service',
+        render: (value: IServiceEntity) => value.name,
     },
     {
         title: 'Thời gian cấp',
         dataIndex: 'createdAt',
         key: 'createdAt',
+        render: (value: Timestamp) => formatDate(value.toDate()),
     },
     {
         title: 'Hạn sử dụng',
-        dataIndex: 'expiredAt',
-        key: 'expiredAt',
+        dataIndex: 'expired',
+        key: 'expired',
+        render: (value: Timestamp) => formatDate(value.toDate()),
     },
     {
         title: 'Trạng thái',
@@ -115,19 +74,8 @@ const columns: TableColumnsType<DataType> = [
 ];
 
 function QueueingPage() {
-    const dataSource = useMemo(
-        () =>
-            Array.from<DataType>({ length: 80 }).map<DataType>((_, i) => ({
-                id: '201' + i.toString().padStart(3, '0'),
-                guestName: names[randomNumber(names.length)],
-                status: statuses[randomNumber(statuses.length)],
-                device: devices[randomNumber(devices.length)],
-                createdAt: formatDate(),
-                expiredAt: formatDate(),
-                serviceName: services[randomNumber(services.length)],
-            })),
-        [],
-    );
+    const loader = useLoaderData() as IQueueingEntity[];
+
     return (
         <>
             <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
@@ -173,7 +121,7 @@ function QueueingPage() {
                 </Form.Item>
             </Form>
 
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={loader} columns={columns} />
 
             <LinkFloatAside to='/queueing/add' title='Cấp số mới' icon={AddSquareSolidIcon} />
         </>

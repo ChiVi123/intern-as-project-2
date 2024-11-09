@@ -57,6 +57,9 @@
             "~hoc": ["./src/shared/hoc"],
             "~hoc/*": ["./src/shared/hoc/*"],
 
+            "~utils": ["./src/shared/utils"],
+            "~utils/*": ["./src/shared/utils/*"],
+
             "~view/*": ["./src/view/*"]
         }
     },

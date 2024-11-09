@@ -1,5 +1,4 @@
 import { Col, DatePicker, Flex, Form, Input, InputNumber, Row, Select, TableColumnsType, Typography } from 'antd';
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { Select as StyledSelect, Table } from '~components';
@@ -65,7 +64,7 @@ const defaultValues: IServiceEntity = {
 };
 
 function ServiceDetailPage() {
-    const loader = useLoaderData() as ResponseRepo<DocumentSnapshot<IServiceEntity, DocumentData>> | ResponseErrorRepo;
+    const loader = useLoaderData() as ResponseRepo<IServiceEntity> | ResponseErrorRepo;
     const dataSource = useMemo(
         () =>
             Array.from<DataType>({ length: 60 }).map<DataType>((_, i) => ({
@@ -81,11 +80,8 @@ function ServiceDetailPage() {
         if (!loader.data) {
             return defaultValues;
         }
-        if (!loader.data.exists()) {
-            return defaultValues;
-        }
 
-        return { ...loader.data.data(), id: loader.data.id };
+        return loader.data;
     }, [loader]);
 
     return (

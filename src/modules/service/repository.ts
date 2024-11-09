@@ -1,6 +1,6 @@
-import { collection, CollectionReference, doc, DocumentReference, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, CollectionReference, doc, DocumentReference, getDocs, setDoc } from 'firebase/firestore';
 import { firebaseStore } from '~config';
-import { ResponseErrorRepo, ResponseRepo } from '~core';
+import { getDocData, ResponseErrorRepo, ResponseRepo } from '~core';
 import { IServiceEntity } from './entity';
 
 export const serviceCollection = collection(firebaseStore, 'service') as CollectionReference<IServiceEntity>;
@@ -25,12 +25,10 @@ export const getAllService = async () => {
 };
 export const getServiceById = async (id: string) => {
     const dataRef = doc(firebaseStore, 'service', id) as DocumentReference<IServiceEntity>;
-    try {
-        const res = await getDoc(dataRef);
 
-        return res.exists()
-            ? new ResponseRepo('Thành công', res)
-            : new ResponseErrorRepo('Không tìm thấy dịch vụ', 'error');
+    try {
+        const res = await getDocData(dataRef, { idField: 'id' });
+        return res ? new ResponseRepo('Thành công', res) : new ResponseErrorRepo('Không tìm thấy dịch vụ', 'error');
     } catch (error) {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }

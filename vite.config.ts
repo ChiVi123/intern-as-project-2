@@ -18,6 +18,7 @@ export default defineConfig({
             '~components': path.resolve(__dirname, './src/shared/components'),
             '~helper': path.resolve(__dirname, './src/shared/helper'),
             '~hoc': path.resolve(__dirname, './src/shared/hoc'),
+            '~utils': path.resolve(__dirname, './src/shared/utils'),
 
             '~view': path.resolve(__dirname, './src/view'),
         },
