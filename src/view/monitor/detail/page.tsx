@@ -1,7 +1,15 @@
 import { Col, Row, Typography } from 'antd';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
-import { cssHeading, cssPaper } from '~css-emotion';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssHeading,
+    cssPaper,
+} from '~css-emotion';
+import { EditSquareSolidIcon } from '~icons';
 import { IDeviceEntity } from '~modules/device';
 
 function MonitorPage() {
@@ -50,6 +58,16 @@ function MonitorPage() {
                         </Typography.Paragraph>
                     </Col>
                 </Row>
+            </div>
+            <div css={cssFloatGroupAction}>
+                <Link to={`/monitor/edit/${loader.id}`}>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <EditSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Cập nhật thiết bị</span>
+                    </div>
+                </Link>
             </div>
         </>
     );

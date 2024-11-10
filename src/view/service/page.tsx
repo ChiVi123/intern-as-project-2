@@ -1,9 +1,15 @@
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
+import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
-import { cssWidthInputFormSearch } from '~css-emotion';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssWidthInputFormSearch,
+} from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 import { IServiceEntity } from '~modules/service';
 
@@ -105,7 +111,16 @@ function ServicePage() {
 
             <Table dataSource={loader} columns={columns} />
 
-            <LinkFloatAside to='/service/add' title='Thêm dịch vụ' icon={AddSquareSolidIcon} />
+            <div css={cssFloatGroupAction}>
+                <Link to='/service/add'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <AddSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Thêm thiết bị</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }

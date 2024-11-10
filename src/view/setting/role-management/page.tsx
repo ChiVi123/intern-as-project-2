@@ -1,7 +1,16 @@
 import { Form, Input, Table, TableColumnsType } from 'antd';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+
 import { designToken } from '~core';
-import { cssWidthInputFormSearch } from '~css-emotion';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssWidthInputFormSearch,
+} from '~css-emotion';
+import { AddSquareSolidIcon } from '~icons';
 
 interface DataType {
     id: string;
@@ -68,6 +77,17 @@ function RoleManagementPage() {
                     },
                 }}
             />
+
+            <div css={cssFloatGroupAction}>
+                <Link to='/setting/role-management/add'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <AddSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Thêm vai trò</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }

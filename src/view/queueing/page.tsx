@@ -1,10 +1,16 @@
 import { DatePicker, Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { Timestamp } from 'firebase/firestore';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
-import { LinkFloatAside, Select as StyledSelect, Table } from '~components';
+import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
-import { cssWidthInputFormSearch } from '~css-emotion';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssWidthInputFormSearch,
+} from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 import { IQueueingEntity } from '~modules/queueing';
 import { IServiceEntity } from '~modules/service';
@@ -123,7 +129,16 @@ function QueueingPage() {
 
             <Table dataSource={loader} columns={columns} />
 
-            <LinkFloatAside to='/queueing/add' title='Cấp số mới' icon={AddSquareSolidIcon} />
+            <div css={cssFloatGroupAction}>
+                <Link to='/queueing/add'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <AddSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Thêm thiết bị</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }

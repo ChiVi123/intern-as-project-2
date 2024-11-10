@@ -1,11 +1,11 @@
-import { PlusOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import { Button, Select as StyledSelect, Table } from '~components';
+import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
-import { ChevronDownSolidIcon } from '~icons';
+import { cssFloatButtonAction, cssFloatContent, cssFloatGroupAction, cssFloatIconWrapper } from '~css-emotion';
+import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 import { IDeviceEntity } from '~modules/device';
 import { IServiceEntity } from '~modules/service';
 
@@ -148,34 +148,16 @@ function MonitorPage() {
 
             <Table dataSource={loader} columns={columns} />
 
-            <Link to='/monitor/add'>
-                <div
-                    css={{
-                        position: 'absolute',
-                        top: 244,
-                        right: 0,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        maxWidth: 80,
-                        paddingBlock: 12,
-                        paddingInline: 4,
-                        backgroundColor: designToken['orange-50'],
-                        borderRadius: '8px 0 0 8px',
-                        textAlign: 'center',
-                        zIndex: 1,
-                    }}
-                >
-                    <Button
-                        variant='solid'
-                        aria-label='add new monitor'
-                        style={{ minWidth: 28, height: 28, marginBottom: 4 }}
-                    >
-                        <PlusOutlined />
-                    </Button>
-                    <span style={{ color: designToken['orange-500'] }}>Thêm thiết bị</span>
-                </div>
-            </Link>
+            <div css={cssFloatGroupAction}>
+                <Link to='/monitor/add'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <AddSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Thêm thiết bị</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }

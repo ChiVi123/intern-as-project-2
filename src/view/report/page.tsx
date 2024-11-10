@@ -1,8 +1,10 @@
 import { DatePicker, Form, TableColumnsType } from 'antd';
 import { useMemo } from 'react';
-import { Table } from '~components';
 
+import { Table } from '~components';
 import { designToken } from '~core';
+import { cssFloatButtonAction, cssFloatGroupAction, cssFloatIconWrapper } from '~css-emotion';
+import { DocumentDownloadSolidIcon } from '~icons';
 
 interface DataType {
     id: string;
@@ -109,6 +111,16 @@ function ReportPage() {
             </Form>
 
             <Table dataSource={dataSource} columns={columns} />
+
+            <div css={cssFloatGroupAction}>
+                <div css={cssFloatButtonAction}>
+                    <div css={cssFloatIconWrapper}>
+                        <DocumentDownloadSolidIcon />
+                    </div>
+
+                    <span style={{ color: designToken['orange-500'] }}>Tải về</span>
+                </div>
+            </div>
         </>
     );
 }

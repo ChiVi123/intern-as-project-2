@@ -1,10 +1,17 @@
 import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
-import { cssWidthInputFormSearch } from '~css-emotion';
-import { ChevronDownSolidIcon } from '~icons';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssWidthInputFormSearch,
+} from '~css-emotion';
+import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
 
 interface DataType {
     id: string;
@@ -155,6 +162,17 @@ function UserManagementPage() {
             </Form>
 
             <Table dataSource={dataSource} columns={columns} />
+
+            <div css={cssFloatGroupAction}>
+                <Link to='/setting/user-management/add'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <AddSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Thêm tài khoản</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }

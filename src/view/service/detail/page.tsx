@@ -1,11 +1,19 @@
 import { Col, DatePicker, Flex, Form, Input, InputNumber, Row, Select, TableColumnsType, Typography } from 'antd';
 import { useMemo } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import { Select as StyledSelect, Table } from '~components';
 import { designToken } from '~core';
-import { cssHeading, cssPaper } from '~css-emotion';
-import { ChevronDownSolidIcon } from '~icons';
+import {
+    cssFloatButtonAction,
+    cssFloatContent,
+    cssFloatGroupAction,
+    cssFloatIconWrapper,
+    cssFloatSeparate,
+    cssHeading,
+    cssPaper,
+} from '~css-emotion';
+import { ArrowBackSolidIcon, ChevronDownSolidIcon, EditSquareSolidIcon } from '~icons';
 import { IServiceEntity } from '~modules/service';
 
 interface DataType {
@@ -184,6 +192,29 @@ function ServiceDetailPage() {
                     <Table dataSource={dataSource} columns={columns} defaultPageSize={8} />
                 </div>
             </Flex>
+
+            <div css={cssFloatGroupAction}>
+                <Link to={`/service/edit/${loader.id}`}>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            <EditSquareSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Cập nhật danh sách</span>
+                    </div>
+                </Link>
+
+                <div css={cssFloatSeparate}></div>
+
+                <Link to='..'>
+                    <div css={cssFloatButtonAction}>
+                        <div css={cssFloatIconWrapper}>
+                            {' '}
+                            <ArrowBackSolidIcon />
+                        </div>
+                        <span css={cssFloatContent}>Quay lại</span>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 }
