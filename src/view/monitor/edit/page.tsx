@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { Form, FormProps, Input, message, Select, SelectProps, Tag, Typography } from 'antd';
+import { Form, FormProps, Input, message, Select, Typography } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 import { doc, DocumentReference } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -10,7 +9,7 @@ import { Button, Select as StyledSelect } from '~components';
 import { firebaseStore } from '~config';
 import { designToken, ResponseErrorRepo } from '~core';
 import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
-import { ChevronDownSolidIcon, XMarkIcon } from '~icons';
+import { ChevronDownSolidIcon } from '~icons';
 import { editDevice, IDeviceEntity } from '~modules/device';
 import { getAllService } from '~modules/service';
 import {
@@ -18,6 +17,7 @@ import {
     deleteServiceDeviceByIds,
     getAllServiceDeviceByDeviceRef,
 } from '~modules/service-device';
+import { TagRenderCustom } from '../components';
 
 type DeviceField = {
     id: string;
@@ -29,41 +29,10 @@ type DeviceField = {
     serviceIds: string[];
 };
 
-type TagRender = SelectProps['tagRender'];
-
 const cssItemCol = css({
     display: 'inline-block',
     width: 'calc(50% - 24px)',
 });
-const StyledCloseIcon = styled(XMarkIcon)({
-    '& > svg': { fontSize: '1.125rem', color: 'white' },
-});
-const StyledTag = styled(Tag)({
-    display: 'flex',
-    alignItems: 'center',
-    paddingBlock: 4,
-    marginBlock: 8,
-    lineHeight: 1.5,
-});
-
-const tagRender: TagRender = (props) => {
-    const { label, closable, onClose } = props;
-    const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-    return (
-        <StyledTag
-            closable={closable}
-            closeIcon={<StyledCloseIcon />}
-            style={{ marginRight: 4 }}
-            onMouseDown={onPreventMouseDown}
-            onClose={onClose}
-        >
-            {label}
-        </StyledTag>
-    );
-};
 
 function EditMonitorPage() {
     const [messageApi, contextHolder] = message.useMessage();
@@ -210,7 +179,7 @@ function EditMonitorPage() {
                             placeholder='Nhập dịch vụ sử dụng'
                             options={options}
                             suffixIcon={null}
-                            tagRender={tagRender}
+                            tagRender={TagRenderCustom}
                         />
                     </Form.Item>
 
