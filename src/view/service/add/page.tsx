@@ -1,8 +1,9 @@
 import { Checkbox, Flex, Form, FormProps, Input, InputNumber, message, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-import { ButtonGroupForm } from '~components';
+import { Button } from '~components';
 import { designToken } from '~core';
-import { cssHeading, cssPaper } from '~css-emotion';
+import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
 import { addService, IServiceEntity } from '~modules/service';
 
 type ServiceField = {
@@ -31,6 +32,8 @@ const initialValues: ServiceField = {
 function EditServicePage() {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
+
     const handleSubmit: FormProps<ServiceField>['onFinish'] = async ({ rule, ...rest }) => {
         const {
             autoIncrement: { active: activeIncrement, ...autoIncrement },
@@ -188,7 +191,12 @@ function EditServicePage() {
                 </Form>
             </div>
 
-            <ButtonGroupForm form={form} />
+            <div css={cssButtonGroupForm}>
+                <Button variant='filled' onClick={() => navigate(-1)}>
+                    Hủy bỏ
+                </Button>
+                <Button onClick={() => form.submit()}>Thêm dịch vụ</Button>
+            </div>
         </>
     );
 }

@@ -3,9 +3,11 @@ import styled from '@emotion/styled';
 import { Form, FormProps, Input, message, Select, Tag, Typography } from 'antd';
 import { DefaultOptionType, SelectProps } from 'antd/es/select';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Select as StyledSelect } from '~components';
 import { designToken, ResponseErrorRepo } from '~core';
+import { cssButtonGroupForm } from '~css-emotion';
 import { ChevronDownSolidIcon, XMarkIcon } from '~icons';
 import { addDevice } from '~modules/device';
 import { getAllService } from '~modules/service';
@@ -60,6 +62,7 @@ function AddMonitorPage() {
     const [messageApi, contextHolder] = message.useMessage();
     const [options, setOptions] = useState<DefaultOptionType[]>([]);
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async function () {
@@ -205,8 +208,8 @@ function AddMonitorPage() {
                 </Form>
             </div>
 
-            <div css={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 24, marginBottom: 32 }}>
-                <Button htmlType='button' variant='filled'>
+            <div css={cssButtonGroupForm}>
+                <Button htmlType='button' variant='filled' onClick={() => navigate(-1)}>
                     Hủy bỏ
                 </Button>
                 <Button htmlType='button' onClick={() => form.submit()}>

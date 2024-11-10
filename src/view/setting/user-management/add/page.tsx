@@ -1,7 +1,9 @@
 import { Form, FormProps, Input, Select, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
 import { Button, Select as StyledSelect } from '~components';
 import { designToken } from '~core';
-import { cssHeading, cssPaper } from '~css-emotion';
+import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
 
 interface IDataForm {
@@ -18,6 +20,7 @@ interface IDataForm {
 
 function AddUserPage() {
     const [form] = Form.useForm<IDataForm>();
+    const navigate = useNavigate();
 
     const handleFinish: FormProps['onFinish'] = (value) => {
         console.log(value);
@@ -138,12 +141,12 @@ function AddUserPage() {
                 </Form>
             </div>
 
-            <div css={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 24, marginBottom: 32 }}>
-                <Button htmlType='button' variant='filled'>
+            <div css={cssButtonGroupForm}>
+                <Button htmlType='button' variant='filled' onClick={() => navigate(-1)}>
                     Hủy bỏ
                 </Button>
                 <Button htmlType='button' onClick={() => form.submit()}>
-                    Thêm thiết bị
+                    Thêm
                 </Button>
             </div>
         </>

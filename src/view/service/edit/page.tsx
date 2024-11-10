@@ -1,10 +1,10 @@
 import { Checkbox, Flex, Form, FormProps, Input, InputNumber, message, Typography } from 'antd';
 import { useMemo } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import { Button } from '~components';
 import { designToken } from '~core';
-import { cssHeading, cssPaper } from '~css-emotion';
+import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
 import { editServiceById, IServiceEntity } from '~modules/service';
 
 type ServiceField = {
@@ -35,6 +35,7 @@ function EditServicePage() {
         return formData;
     }, [loader]);
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const handleSubmit: FormProps<ServiceField>['onFinish'] = async ({ id, rule, ...rest }) => {
         const {
@@ -191,8 +192,10 @@ function EditServicePage() {
                 </Form>
             </div>
 
-            <div css={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 24, marginBottom: 32 }}>
-                <Button variant='filled'>Hủy bỏ</Button>
+            <div css={cssButtonGroupForm}>
+                <Button variant='filled' onClick={() => navigate(-1)}>
+                    Hủy bỏ
+                </Button>
                 <Button onClick={() => form.submit()}>Cập nhật</Button>
             </div>
         </>

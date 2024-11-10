@@ -4,7 +4,7 @@ import { Flex, Form, FormProps, message, Modal, ModalProps, Typography } from 'a
 import { DefaultOptionType } from 'antd/es/select';
 import { doc, DocumentReference, Timestamp } from 'firebase/firestore';
 import { useMemo, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import { Button, Select as StyledSelect } from '~components';
 import { firebaseStore } from '~config';
@@ -41,6 +41,7 @@ function AddQueuePage() {
     const options = useMemo(() => {
         return loaderService.map((item) => ({ label: item.name, value: item.id } as DefaultOptionType));
     }, [loaderService]);
+    const navigate = useNavigate();
 
     const handleSubmit: FormProps<DataType>['onFinish'] = async ({ serviceId }) => {
         const serviceRef = doc(firebaseStore, 'service', serviceId) as DocumentReference<IServiceEntity>;
@@ -123,10 +124,10 @@ function AddQueuePage() {
 
                     <Form.Item style={{ marginTop: 80 }}>
                         <Flex gap={32} justify='center'>
-                            <Button htmlType='button' variant='filled'>
+                            <Button htmlType='button' variant='filled' onClick={() => navigate(-1)}>
                                 Hủy bỏ
                             </Button>
-                            <Button htmlType='submit'>Thêm thiết bị</Button>
+                            <Button htmlType='submit'>In số</Button>
                         </Flex>
                     </Form.Item>
                 </Form>

@@ -1,5 +1,4 @@
 export { default as Button } from './button';
-export { default as ButtonGroupForm } from './button-group-form';
 export { default as FirebaseAuth } from './firebase-auth';
 export { default as LinkFloatAside } from './link-float-aside';
 export { default as ScrollToTop } from './scroll-to-top';
