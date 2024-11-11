@@ -24,8 +24,8 @@ const columns: TableColumnsType<IQueueingEntity> = [
     },
     {
         title: 'Tên khách hàng',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'guestName',
+        key: 'guestName',
     },
     {
         title: 'Tên dịch vụ ',
@@ -84,7 +84,7 @@ function QueueingPage() {
 
     return (
         <>
-            <Typography.Title level={3}>Quản lý dịch vụ</Typography.Title>
+            <Typography.Title level={3}>Quản lý cấp số</Typography.Title>
 
             <Form name='queueing_search' layout='inline'>
                 <Form.Item layout='vertical' label='Tên dịch vụ' name='serviceName' initialValue='all'>
