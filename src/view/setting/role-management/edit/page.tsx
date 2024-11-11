@@ -1,17 +1,12 @@
-import { CheckboxOptionType, Form, FormProps, Input, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { CheckboxOptionType, Form, FormProps, Input, message, Typography } from 'antd';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import { Button } from '~components';
-import { designToken } from '~core';
-import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
+import { designToken, ResponseErrorRepo } from '~core';
+import { cssButtonGroupForm, cssHeading, cssPaper, cssScrollbar } from '~css-emotion';
+import { editRoleById, IRoleEntity } from '~modules/role';
 
 import { CheckboxGroup } from '../components';
-
-interface IDataForm {
-    name: string;
-    description: string;
-    featureGroups: string[][];
-}
 
 const optionsA: CheckboxOptionType<string>[] = [
     { label: 'Chức năng A x', value: 'feature-a-x' },
@@ -25,15 +20,23 @@ const optionsB: CheckboxOptionType<string>[] = [
 ];
 
 function EditRoleUserPage() {
-    const [form] = Form.useForm<IDataForm>();
+    const loader = useLoaderData() as IRoleEntity;
+    const [form] = Form.useForm<IRoleEntity>();
+    const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
 
-    const handleFinish: FormProps<IDataForm>['onFinish'] = (value) => {
-        console.log(value);
+    const handleFinish: FormProps<IRoleEntity>['onFinish'] = async (value) => {
+        const result = await editRoleById(loader.id, value);
+        if (result instanceof ResponseErrorRepo) {
+            console.log(result.error);
+        }
+        messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
+        // Chịu trách nhiệm thống kê số liệu và kiểm toán
     };
 
     return (
         <>
+            {contextHolder}
             <Typography.Title level={3}>Thêm vai trò</Typography.Title>
 
             <div css={cssPaper}>
@@ -41,16 +44,7 @@ function EditRoleUserPage() {
                     Thông tin vai trò
                 </Typography.Title>
 
-                <Form
-                    form={form}
-                    layout='inline'
-                    initialValues={{
-                        name: 'Kế toán',
-                        description: 'Chịu trách nhiệm thống kê số liệu và kiểm toán',
-                        featureGroups: [['feature-a-x', 'feature-a-z'], ['feature-b-y']],
-                    }}
-                    onFinish={handleFinish}
-                >
+                <Form form={form} layout='inline' initialValues={loader} onFinish={handleFinish}>
                     <Form.Item style={{ flex: 1 }}>
                         <Form.Item
                             layout='vertical'
@@ -69,18 +63,7 @@ function EditRoleUserPage() {
 
                     <Form.Item layout='vertical' label='Phân quyền chức năng' required>
                         <div
-                            css={{
-                                '::-webkit-scrollbar': {
-                                    width: 4,
-                                },
-                                '::-webkit-scrollbar-track': {
-                                    background: 'transparent',
-                                },
-                                '::-webkit-scrollbar-thumb': {
-                                    background: designToken['orange-200'],
-                                    borderRadius: 2,
-                                },
-                            }}
+                            css={cssScrollbar}
                             style={{
                                 width: 560,
                                 height: 420,
@@ -95,7 +78,7 @@ function EditRoleUserPage() {
                                 Nhóm chức năng A
                             </Typography.Title>
 
-                            <Form.Item name={['featureGroups', 0]}>
+                            <Form.Item name={['featureGroups', 'feature-a']}>
                                 <CheckboxGroup options={optionsA} />
                             </Form.Item>
 
@@ -103,7 +86,7 @@ function EditRoleUserPage() {
                                 Nhóm chức năng B
                             </Typography.Title>
 
-                            <Form.Item name={['featureGroups', 1]}>
+                            <Form.Item name={['featureGroups', 'feature-b']}>
                                 <CheckboxGroup options={optionsB} />
                             </Form.Item>
                         </div>
@@ -116,7 +99,7 @@ function EditRoleUserPage() {
                     Hủy bỏ
                 </Button>
                 <Button htmlType='button' onClick={() => form.submit()}>
-                    Thêm
+                    Cập nhật
                 </Button>
             </div>
         </>
