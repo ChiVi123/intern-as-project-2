@@ -16,6 +16,11 @@ const userSlice = createSlice({
             state.error = '';
             state.loading = 'pending';
         }),
+        endReject: creators.reducer((state, { payload }: PayloadAction<string>) => {
+            state.data = undefined;
+            state.error = payload;
+            state.loading = 'rejected';
+        }),
         addUser: creators.reducer((state, { payload }: PayloadAction<IUserEntity>) => {
             state.data = payload;
             state.loading = 'fulfilled';

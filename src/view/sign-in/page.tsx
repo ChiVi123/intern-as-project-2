@@ -3,12 +3,13 @@ import { Button, Flex, Form, FormProps, Input, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { designToken, useAppDispatch } from '~core';
-import { fetchSignIn, userSelectors } from '~modules/user';
+import { fetchSignIn, userActions, userSelectors } from '~modules/user';
 
 type FieldType = {
-    username?: string;
-    password?: string;
+    username: string;
+    password: string;
 };
 
 function SignInPage() {
@@ -17,13 +18,17 @@ function SignInPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        dispatch(userActions.logout());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (loading === 'fulfilled') {
             navigate('/dashboard/profile');
         }
     }, [loading, navigate]);
 
     const handleFinish: FormProps<FieldType>['onFinish'] = async ({ username, password }) => {
-        await dispatch(fetchSignIn({ email: username! + '@as.intern', password: password! }));
+        await dispatch(fetchSignIn({ username, password: password! }));
     };
 
     return (

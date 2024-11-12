@@ -1,33 +1,30 @@
-import { Form, FormProps, Input, Select, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Form, FormProps, Input, message, Select, Typography } from 'antd';
+import { DefaultOptionType } from 'antd/es/select';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import { Button, Select as StyledSelect } from '~components';
 import { designToken } from '~core';
 import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
+import { addUser, IUserEntity } from '~modules/user';
 
-interface IDataForm {
-    id: string;
-    fullName: string;
-    username: string;
-    email: string;
-    phoneNumber: string;
-    password: string;
-    passwordConfirm: string;
-    roleUser: string;
-    status: string;
-}
+type DataForm = Omit<IUserEntity, 'id'> & { password: string; passwordConfirm: string };
 
 function AddUserPage() {
-    const [form] = Form.useForm<IDataForm>();
+    const loader = useLoaderData() as DefaultOptionType[];
+    const [form] = Form.useForm<DataForm>();
+    const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
 
-    const handleFinish: FormProps['onFinish'] = (value) => {
-        console.log(value);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const handleFinish: FormProps<DataForm>['onFinish'] = async ({ password, passwordConfirm, ...data }) => {
+        const result = await addUser(data, password);
+        messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
     };
 
     return (
         <>
+            {contextHolder}
             <Typography.Title level={3}>Quản lý tài khoản</Typography.Title>
 
             <div css={cssPaper}>
@@ -37,17 +34,17 @@ function AddUserPage() {
 
                 <Form form={form} onFinish={handleFinish}>
                     <Form.Item style={{ marginBottom: 47 }}>
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Họ tên'
-                            name='fullName'
+                            name='displayName'
                             required
                             style={{ display: 'inline-block', width: 'calc(50% - 24px)', margin: 0, marginRight: 24 }}
                         >
                             <Input placeholder='Nhập họ tên' />
                         </Form.Item>
 
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Tên đăng nhập:'
                             name='username'
@@ -59,7 +56,7 @@ function AddUserPage() {
                     </Form.Item>
 
                     <Form.Item style={{ marginBottom: 47 }}>
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Số điện thoại'
                             name='phoneNumber'
@@ -69,7 +66,7 @@ function AddUserPage() {
                             <Input placeholder='Nhập số điện thoại' />
                         </Form.Item>
 
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Mật khẩu:'
                             name='password'
@@ -81,7 +78,7 @@ function AddUserPage() {
                     </Form.Item>
 
                     <Form.Item style={{ marginBottom: 47 }}>
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Email'
                             name='email'
@@ -91,11 +88,24 @@ function AddUserPage() {
                             <Input placeholder='Nhập email' />
                         </Form.Item>
 
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Nhập lại mật khẩu:'
                             name='passwordConfirm'
                             required
+                            dependencies={['password']}
+                            hasFeedback
+                            rules={[
+                                { required: true, message: 'Nhập nhập lại mật khẩu' },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('Mật khẩu nhập lại không đúng'));
+                                    },
+                                }),
+                            ]}
                             style={{ display: 'inline-block', width: 'calc(50% - 24px)', margin: 0 }}
                         >
                             <Input.Password placeholder='Nhập nhập lại mật khẩu' />
@@ -103,24 +113,21 @@ function AddUserPage() {
                     </Form.Item>
 
                     <Form.Item style={{ marginBottom: 47 }}>
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Vai trò'
-                            name='roleUser'
+                            name='role'
                             required
                             style={{ display: 'inline-block', width: 'calc(50% - 24px)', margin: 0, marginRight: 24 }}
                         >
-                            <StyledSelect placeholder='Chọn vai trò' suffixIcon={<ChevronDownSolidIcon />}>
-                                <Select.Option value='accountant'>Kế toán</Select.Option>
-                                <Select.Option value='doctor'>Bác sĩ</Select.Option>
-                                <Select.Option value='receptionist'>Lễ tân</Select.Option>
-                                <Select.Option value='manager'>Quản lý</Select.Option>
-                                <Select.Option value='admin'>Admin</Select.Option>
-                                <Select.Option value='supper-admin'>Superadmin</Select.Option>
-                            </StyledSelect>
+                            <StyledSelect
+                                placeholder='Chọn vai trò'
+                                options={loader}
+                                suffixIcon={<ChevronDownSolidIcon />}
+                            />
                         </Form.Item>
 
-                        <Form.Item<IDataForm>
+                        <Form.Item<DataForm>
                             layout='vertical'
                             label='Tình trạng:'
                             name='status'

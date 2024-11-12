@@ -99,7 +99,7 @@ const columns: TableColumnsType<DataType> = [
             return (
                 <>
                     <span
-                        css={{
+                        style={{
                             display: 'inline-block',
                             width: 8,
                             height: 8,
@@ -107,7 +107,7 @@ const columns: TableColumnsType<DataType> = [
                             borderRadius: '100%',
                             backgroundColor: value === 'Hoạt động' ? designToken.colorSuccess : '#ec3740',
                         }}
-                    ></span>
+                    />
                     {value}
                 </>
             );
