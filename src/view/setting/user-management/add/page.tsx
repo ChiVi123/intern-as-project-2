@@ -1,14 +1,16 @@
 import { Form, FormProps, Input, message, Select, Typography } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
+import { doc } from 'firebase/firestore';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import { Button, Select as StyledSelect } from '~components';
 import { designToken } from '~core';
 import { cssButtonGroupForm, cssHeading, cssPaper } from '~css-emotion';
 import { ChevronDownSolidIcon } from '~icons';
+import { roleCollection } from '~modules/role';
 import { addUser, IUserEntity } from '~modules/user';
 
-type DataForm = Omit<IUserEntity, 'id'> & { password: string; passwordConfirm: string };
+type DataForm = Omit<IUserEntity, 'id' | 'role'> & { password: string; passwordConfirm: string; role: string };
 
 function AddUserPage() {
     const loader = useLoaderData() as DefaultOptionType[];
@@ -17,8 +19,9 @@ function AddUserPage() {
     const navigate = useNavigate();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleFinish: FormProps<DataForm>['onFinish'] = async ({ password, passwordConfirm, ...data }) => {
-        const result = await addUser(data, password);
+    const handleFinish: FormProps<DataForm>['onFinish'] = async ({ password, passwordConfirm, role, ...data }) => {
+        const roleRef = doc(roleCollection, role);
+        const result = await addUser({ ...data, role: roleRef }, password);
         messageApi.open({ type: result.success ? 'success' : 'error', content: result.message });
     };
 
