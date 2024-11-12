@@ -3,10 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { designToken } from '~core';
 import { CameraOutlinedIcon } from '~icons';
+import { IRoleEntity } from '~modules/role';
 import { userSelectors } from '~modules/user';
-
-const photoURLDefault: string =
-    'https://firebasestorage.googleapis.com/v0/b/intern-as-project-2.appspot.com/o/avatar-248x248-min.png?alt=media&token=10838519-a396-4d08-ad92-cfef968bfb23';
 
 function ProfilePage() {
     const currentUser = useSelector(userSelectors.data);
@@ -17,7 +15,7 @@ function ProfilePage() {
             <Flex gap={24}>
                 <div css={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
                     <div css={{ position: 'relative' }}>
-                        <Avatar src={currentUser?.photoURL || photoURLDefault} alt='user' size={248} />
+                        <Avatar src={currentUser?.photoURL} alt='user' size={248} />
                         <div
                             css={{
                                 position: 'absolute',
@@ -70,7 +68,7 @@ function ProfilePage() {
                         </Col>
                         <Col span={12}>
                             <Form.Item label='Vai trò:' layout='vertical'>
-                                <Input disabled defaultValue={''} />
+                                <Input disabled defaultValue={(currentUser?.role as IRoleEntity).name} />
                             </Form.Item>
                         </Col>
                     </Row>

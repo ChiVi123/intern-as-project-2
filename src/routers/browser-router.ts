@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { BodyOnlyLayout, DefaultLayout } from '~layout';
-import profileRouter from '~view/dashboard/profile/router';
 import dashboardRouter from '~view/dashboard/router';
 import homeRouter from '~view/home/router';
 import addMonitorRouter from '~view/monitor/add/router';
 import monitorDetailRouter from '~view/monitor/detail/router';
 import editMonitorRouter from '~view/monitor/edit/router';
 import monitorRouter from '~view/monitor/router';
+import profileRouter from '~view/profile/router';
 import addQueueRouter from '~view/queueing/add/router';
 import queueingRouter from '~view/queueing/router';
 import reportRouter from '~view/report/router';
@@ -40,6 +40,7 @@ export const browserRouter = createBrowserRouter([
                         path: '/dashboard',
                         children: [dashboardRouter, profileRouter],
                     },
+                    profileRouter,
                     {
                         path: '/monitor',
                         children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
