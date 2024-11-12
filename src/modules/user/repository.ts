@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { collection, CollectionReference, doc, setDoc } from 'firebase/firestore';
 
 import { firebaseAuth, firebaseStore } from '~config';
-import { getDocData, getDocsRefs, ResponseErrorRepo, ResponseRepo } from '~core';
+import { getDocRefs, getDocsRefs, ResponseErrorRepo, ResponseRepo } from '~core';
 
 import { IUserEntity, IUserFireBase } from './entity';
 
@@ -42,9 +42,10 @@ export const addUser = async ({ displayName, photoURL, ...data }: Omit<IUserEnti
 export const getUserById = async (id: string) => {
     const docRef = doc(userCollection, id);
     try {
-        const res = await getDocData(docRef, { idField: 'id' });
+        const res = await getDocRefs(docRef, { idField: 'id' });
         return new ResponseRepo('Thành công', res);
     } catch (error) {
+        console.log(error);
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }
 };
@@ -56,7 +57,12 @@ export const getAllUser = async () => {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }
 };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const editUser = async ({ displayName, photoURL, ...data }: Omit<IUserEntity, 'id'>, password: string) => {
-    console.log(firebaseAuth.currentUser);
+export const editUser = async (data: IUserFireBase) => {
+    const docRef = doc(userCollection, data.id);
+    try {
+        await setDoc(docRef, data);
+        return new ResponseRepo('Thành công');
+    } catch (error) {
+        return new ResponseErrorRepo('Xảy ra lỗi', error);
+    }
 };

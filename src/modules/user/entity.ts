@@ -11,7 +11,9 @@ export interface IUserEntity {
     status: string;
 }
 export interface IUserFireBase {
+    id: string;
     username: string;
+    displayName: string;
     email: string;
     phoneNumber: string;
     role: DocumentReference<IRoleEntity> | IRoleEntity | null;
