@@ -6,7 +6,7 @@ const photoURLDefault: string =
 
 export const mapToUserEntity = (userAuth: User, userFirebase: IUserFireBase): IUserEntity => ({
     username: userFirebase.username ?? userAuth.email!.split('@')[0].toLowerCase(),
-    displayName: userAuth.displayName ?? '',
+    displayName: userFirebase.displayName ?? '',
     email: userAuth.email!,
     photoURL: userAuth.photoURL ?? photoURLDefault,
     phoneNumber: userFirebase.phoneNumber ?? '',

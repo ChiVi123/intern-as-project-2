@@ -13,7 +13,7 @@ const photoURLDefault: string = `${baseUrl}/v0/b/intern-as-project-2.appspot.com
 export const userCollection = collection(firebaseStore, 'user') as CollectionReference<IUserFireBase>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const addUser = async ({ displayName, photoURL, ...data }: Omit<IUserEntity, 'id'>, password: string) => {
+export const addUser = async ({ photoURL, ...data }: Omit<IUserEntity, 'id'>, password: string) => {
     const userAuthRes = await createUserWithEmailAndPassword(firebaseAuth, data.email, password).catch(
         (error) => error as Error,
     );
@@ -22,10 +22,7 @@ export const addUser = async ({ displayName, photoURL, ...data }: Omit<IUserEnti
     }
 
     try {
-        await updateProfile(userAuthRes.user, {
-            displayName,
-            photoURL: photoURLDefault,
-        });
+        await updateProfile(userAuthRes.user, { photoURL: photoURLDefault });
     } catch (error) {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }

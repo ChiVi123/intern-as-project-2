@@ -22,8 +22,8 @@ const columns: TableColumnsType<IUserFireBase> = [
     },
     {
         title: 'Họ tên',
-        dataIndex: 'username',
-        key: 'username',
+        dataIndex: 'displayName',
+        key: 'displayName',
     },
     {
         title: 'Số điện thoại',
