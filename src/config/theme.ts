@@ -12,6 +12,10 @@ export const themeConfig: ThemeConfig = {
             defaultBg: '#ff7506',
             defaultColor: '#fff',
         },
+        Breadcrumb: {
+            iconFontSize: 20,
+            separatorColor: '#7E7D88',
+        },
     },
     token: {
         // font

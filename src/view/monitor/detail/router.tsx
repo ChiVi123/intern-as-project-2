@@ -37,6 +37,9 @@ const monitorDetailRouter: RouteObject = {
 
         return { ...deviceRes.data!, services: serviceRes.data!.map((item) => item.service as IServiceEntity) };
     },
+    handle: {
+        title: 'Chi tiết thiết bị',
+    },
 };
 
 export default monitorDetailRouter;

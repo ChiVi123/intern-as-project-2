@@ -179,7 +179,7 @@ function AddMonitorPage() {
             </div>
 
             <div css={cssButtonGroupForm}>
-                <Button htmlType='button' variant='filled' onClick={() => navigate(-1)}>
+                <Button htmlType='button' variant='filled' onClick={() => navigate('/monitor')}>
                     Hủy bỏ
                 </Button>
                 <Button htmlType='button' onClick={() => form.submit()}>

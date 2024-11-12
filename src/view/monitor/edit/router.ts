@@ -43,6 +43,9 @@ const editMonitorRouter: RouteObject = {
 
         return { ...deviceRes.data!, serviceIds: serviceRes.data!.map((item) => item.service.id) };
     },
+    handle: {
+        title: 'Cập nhật thiết bị',
+    },
 };
 
 export default editMonitorRouter;

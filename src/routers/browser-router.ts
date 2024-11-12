@@ -36,37 +36,87 @@ export const browserRouter = createBrowserRouter([
                 Component: PrivateRoute,
                 children: [
                     homeRouter,
-                    {
-                        path: '/dashboard',
-                        children: [dashboardRouter, profileRouter],
-                    },
+                    dashboardRouter,
                     profileRouter,
                     {
                         path: '/monitor',
-                        children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
+                        children: [
+                            {
+                                path: '',
+                                children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
+                                handle: {
+                                    title: 'Danh sách thiết bị',
+                                    href: '/monitor',
+                                },
+                            },
+                        ],
+                        handle: {
+                            title: 'Thiết bị',
+                        },
                     },
                     {
                         path: '/service',
-                        children: [serviceRouter, addServiceRouter, serviceDetailRouter, editServiceRouter],
+                        children: [
+                            {
+                                path: '',
+                                children: [serviceRouter, addServiceRouter, serviceDetailRouter, editServiceRouter],
+                                handle: {
+                                    title: 'Danh sách dịch vụ',
+                                    href: '/service',
+                                },
+                            },
+                        ],
+                        handle: {
+                            title: 'Dịch vụ',
+                        },
                     },
                     {
                         path: '/queueing',
-                        children: [queueingRouter, addQueueRouter],
+                        children: [
+                            {
+                                path: '',
+                                children: [queueingRouter, addQueueRouter],
+                                handle: {
+                                    title: 'Danh sách cấp số',
+                                    href: '/service',
+                                },
+                            },
+                        ],
+                        handle: {
+                            title: 'Cấp số',
+                        },
                     },
-                    reportRouter,
+                    {
+                        path: '/report',
+                        children: [reportRouter],
+                        handle: {
+                            title: 'Báo cáo',
+                        },
+                    },
                     {
                         path: 'setting',
                         children: [
                             {
                                 path: 'role-management',
                                 children: [roleManagementRouter, addRoleUserRouter, editRoleUserRouter],
+                                handle: {
+                                    title: 'Quản lý vai trò',
+                                    href: '/setting/role-management',
+                                },
                             },
                             {
                                 path: 'user-management',
                                 children: [userManagementRouter, addUserRouter, editUserRouter],
+                                handle: {
+                                    title: 'Quản lý tài khoản',
+                                    href: '/setting/user-management',
+                                },
                             },
                             userLoggingRouter,
                         ],
+                        handle: {
+                            title: 'Cài đặt hệ thống',
+                        },
                     },
                 ],
             },

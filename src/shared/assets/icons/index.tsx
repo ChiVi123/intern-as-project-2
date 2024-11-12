@@ -1,4 +1,5 @@
 export { default as AddSquareSolidIcon } from './add-square-solid';
+export { default as AngleRightIcon } from './angle-right';
 export { default as ArrowBackSolidIcon } from './arrow-back-solid';
 export { default as CameraOutlinedIcon } from './camera-outlined';
 export { default as ChevronDownSolidIcon } from './chevron-down-solid';

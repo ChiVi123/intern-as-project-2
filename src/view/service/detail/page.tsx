@@ -205,10 +205,9 @@ function ServiceDetailPage() {
 
                 <div css={cssFloatSeparate}></div>
 
-                <Link to='..'>
+                <Link to='/service'>
                     <div css={cssFloatButtonAction}>
                         <div css={cssFloatIconWrapper}>
-                            {' '}
                             <ArrowBackSolidIcon />
                         </div>
                         <span css={cssFloatContent}>Quay lại</span>

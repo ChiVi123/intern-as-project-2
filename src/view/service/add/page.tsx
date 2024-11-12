@@ -192,7 +192,7 @@ function EditServicePage() {
             </div>
 
             <div css={cssButtonGroupForm}>
-                <Button variant='filled' onClick={() => navigate(-1)}>
+                <Button variant='filled' onClick={() => navigate('/service')}>
                     Hủy bỏ
                 </Button>
                 <Button onClick={() => form.submit()}>Thêm dịch vụ</Button>

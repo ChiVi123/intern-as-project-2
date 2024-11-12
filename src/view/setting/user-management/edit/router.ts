@@ -11,6 +11,7 @@ const rawUserFirebase: IUserFireBase = {
     role: null,
     status: '',
     username: '',
+    displayName: '',
 };
 
 const editUserRouter: RouteObject = {
@@ -28,6 +29,7 @@ const editUserRouter: RouteObject = {
 
         return { user, options };
     },
+    handle: { title: 'Cập nhật tài khoản' },
 };
 
 export default editUserRouter;

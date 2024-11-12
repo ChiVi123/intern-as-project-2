@@ -13,6 +13,9 @@ const addQueueRouter: RouteObject = {
         }
         return res.data!;
     },
+    handle: {
+        title: 'Cấp số mới',
+    },
 };
 
 export default addQueueRouter;

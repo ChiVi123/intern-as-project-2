@@ -27,6 +27,9 @@ const editServiceRouter: RouteObject = {
         }
         return res.data!;
     },
+    handle: {
+        title: 'Cập nhật',
+    },
 };
 
 export default editServiceRouter;

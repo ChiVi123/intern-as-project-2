@@ -8,13 +8,9 @@ const addUserRouter: RouteObject = {
     Component: lazy(() => import('./page')),
     loader: async () => {
         const res = await getAllRole();
-
-        if (res instanceof ResponseErrorRepo) {
-            return [];
-        }
-
-        return res.data!.map((item) => ({ label: item.name, value: item.id }));
+        return res instanceof ResponseErrorRepo ? [] : res.data!.map((item) => ({ label: item.name, value: item.id }));
     },
+    handle: { title: 'Thêm tài khoản' },
 };
 
 export default addUserRouter;

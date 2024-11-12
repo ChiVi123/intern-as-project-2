@@ -22,6 +22,7 @@ const editRoleUserRouter: RouteObject = {
 
         return res.data!;
     },
+    handle: { title: 'Cập nhật vai trò' },
 };
 
 export default editRoleUserRouter;

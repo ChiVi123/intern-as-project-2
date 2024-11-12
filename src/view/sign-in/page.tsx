@@ -23,7 +23,7 @@ function SignInPage() {
 
     useEffect(() => {
         if (loading === 'fulfilled') {
-            navigate('/dashboard/profile');
+            navigate('/profile');
         }
     }, [loading, navigate]);
 

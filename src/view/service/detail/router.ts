@@ -27,6 +27,9 @@ const serviceDetailRouter: RouteObject = {
         }
         return res.data!;
     },
+    handle: {
+        title: 'Chi tiết',
+    },
 };
 
 export default serviceDetailRouter;
