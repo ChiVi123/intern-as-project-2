@@ -1,8 +1,8 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { collection, CollectionReference, doc, DocumentReference, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { collection, CollectionReference, doc, setDoc } from 'firebase/firestore';
 
 import { firebaseAuth, firebaseStore } from '~config';
-import { getDocData, ResponseErrorRepo, ResponseRepo } from '~core';
+import { getDocData, getDocsRefs, ResponseErrorRepo, ResponseRepo } from '~core';
 
 import { IUserEntity, IUserFireBase } from './entity';
 
@@ -12,13 +12,6 @@ const photoURLDefault: string = `${baseUrl}/v0/b/intern-as-project-2.appspot.com
 
 export const userCollection = collection(firebaseStore, 'user') as CollectionReference<IUserFireBase>;
 
-export const signIn = async (email: string, password: string) => {
-    try {
-        return await signInWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (error) {
-        console.log(error);
-    }
-};
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const addUser = async ({ displayName, photoURL, ...data }: Omit<IUserEntity, 'id'>, password: string) => {
     const userAuthRes = await createUserWithEmailAndPassword(firebaseAuth, data.email, password).catch(
@@ -47,11 +40,23 @@ export const addUser = async ({ displayName, photoURL, ...data }: Omit<IUserEnti
     }
 };
 export const getUserById = async (id: string) => {
-    const docRef = doc(firebaseStore, 'user', id) as DocumentReference<IUserFireBase>;
+    const docRef = doc(userCollection, id);
     try {
         const res = await getDocData(docRef, { idField: 'id' });
         return new ResponseRepo('Thành công', res);
     } catch (error) {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }
+};
+export const getAllUser = async () => {
+    try {
+        const res = await getDocsRefs(userCollection, { idField: 'id' });
+        return res.length ? new ResponseRepo('Thành công', res) : new ResponseErrorRepo('Không tìm thấy', 'error');
+    } catch (error) {
+        return new ResponseErrorRepo('Xảy ra lỗi', error);
+    }
+};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const editUser = async ({ displayName, photoURL, ...data }: Omit<IUserEntity, 'id'>, password: string) => {
+    console.log(firebaseAuth.currentUser);
 };

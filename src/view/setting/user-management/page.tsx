@@ -1,9 +1,8 @@
 import { Form, Input, Select, TableColumnsType, Typography } from 'antd';
-import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import { Select as StyledSelect, Table } from '~components';
-import { designToken } from '~core';
+import { designToken, texts } from '~core';
 import {
     cssFloatButtonAction,
     cssFloatContent,
@@ -12,60 +11,10 @@ import {
     cssWidthInputFormSearch,
 } from '~css-emotion';
 import { AddSquareSolidIcon, ChevronDownSolidIcon } from '~icons';
+import { IRoleEntity } from '~modules/role';
+import { IUserFireBase } from '~modules/user';
 
-interface DataType {
-    id: string;
-    username: string;
-    fullName: string;
-    phoneNumber: string;
-    email: string;
-    roleUser: string;
-    status: string;
-}
-
-const randomNumber = (to: number) => Math.floor(Math.random() * to);
-const firstNames = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-];
-const phones = [
-    '0952877038',
-    '0942003627',
-    '0942212841',
-    '0913836129',
-    '0913922489',
-    '0974158510',
-    '0987120230',
-    '0972706344',
-    '0918476874',
-];
-const statuses = ['Hoạt động', 'Ngưng hoạt động'];
-const roleUsers = ['Kế toán', 'Bác sĩ', 'Lễ tân', 'Quản lý', 'Admin', 'Superadmin'];
-const columns: TableColumnsType<DataType> = [
+const columns: TableColumnsType<IUserFireBase> = [
     {
         title: 'Tên đăng nhập',
         dataIndex: 'username',
@@ -73,8 +22,8 @@ const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Họ tên',
-        dataIndex: 'fullName',
-        key: 'fullName',
+        dataIndex: 'username',
+        key: 'username',
     },
     {
         title: 'Số điện thoại',
@@ -88,14 +37,15 @@ const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Vai trò',
-        dataIndex: 'roleUser',
-        key: 'roleUser',
+        dataIndex: 'role',
+        key: 'role',
+        render: (value: IRoleEntity) => value.name,
     },
     {
         title: 'Trạng thái',
         dataIndex: 'status',
         key: 'status',
-        render: (value: string) => {
+        render: (value: 'running' | 'stopping') => {
             return (
                 <>
                     <span
@@ -105,30 +55,32 @@ const columns: TableColumnsType<DataType> = [
                             height: 8,
                             marginRight: 4,
                             borderRadius: '100%',
-                            backgroundColor: value === 'Hoạt động' ? designToken.colorSuccess : '#ec3740',
+                            backgroundColor: value === 'running' ? designToken.colorSuccess : '#ec3740',
                         }}
                     />
-                    {value}
+                    {texts[value]}
                 </>
             );
         },
     },
+    {
+        title: '',
+        dataIndex: 'id',
+        key: 'user-edit',
+        render: (value) => (
+            <Link
+                to={`/setting/user-management/edit/${value}`}
+                style={{ textDecoration: 'underline', color: designToken.colorLink }}
+            >
+                Cập nhật
+            </Link>
+        ),
+    },
 ];
 
 function UserManagementPage() {
-    const dataSource = useMemo(
-        () =>
-            Array.from<DataType>({ length: 80 }).map<DataType>((_, i) => ({
-                id: i.toString(),
-                username: 'tuyetnguyen@1' + i,
-                fullName: 'Nguyen Văn ' + firstNames[randomNumber(firstNames.length)],
-                email: 'tuyetnguyen' + i.toString().padStart(3, '0') + '@gmail.com',
-                phoneNumber: phones[randomNumber(phones.length)],
-                roleUser: roleUsers[randomNumber(roleUsers.length)],
-                status: statuses[randomNumber(statuses.length)],
-            })),
-        [],
-    );
+    const loader = useLoaderData() as IUserFireBase[];
+
     return (
         <>
             <Typography.Title level={3}>Danh sách tài khoản</Typography.Title>
@@ -161,7 +113,7 @@ function UserManagementPage() {
                 </Form.Item>
             </Form>
 
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={loader} columns={columns} />
 
             <div css={cssFloatGroupAction}>
                 <Link to='/setting/user-management/add'>
