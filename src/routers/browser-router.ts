@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { BodyOnlyLayout, DefaultLayout } from '~layout';
+import { BodyOnlyLayout, DashboardLayout, DefaultLayout } from '~layout';
 import dashboardRouter from '~view/dashboard/router';
 import homeRouter from '~view/home/router';
 import addMonitorRouter from '~view/monitor/add/router';
@@ -28,6 +28,15 @@ import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
     {
+        Component: DashboardLayout,
+        children: [
+            {
+                Component: PrivateRoute,
+                children: [dashboardRouter],
+            },
+        ],
+    },
+    {
         path: '',
         Component: DefaultLayout,
         children: [
@@ -36,7 +45,6 @@ export const browserRouter = createBrowserRouter([
                 Component: PrivateRoute,
                 children: [
                     homeRouter,
-                    dashboardRouter,
                     profileRouter,
                     {
                         path: '/monitor',
