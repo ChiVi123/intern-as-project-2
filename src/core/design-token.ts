@@ -40,10 +40,10 @@ export const designToken: IAliasToken = {
     'orange-900': '#',
 
     'gray-50': '#',
-    'gray-100': '#',
+    'gray-100': '#d4d4d7',
     'gray-200': '#a9a9b0',
     'gray-300': '#7e7d88',
-    'gray-400': '#',
+    'gray-400': '#535261',
     'gray-500': '#',
     'gray-600': '#',
     'gray-700': '#',
