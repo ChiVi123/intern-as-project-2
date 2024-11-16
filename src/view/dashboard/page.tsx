@@ -1,10 +1,29 @@
-import { ArrowDownOutlined } from '@ant-design/icons';
 import { Area, RadialBar, Tooltip } from '@ant-design/plots';
-import styled from '@emotion/styled';
-import { Card, Flex, Form, Tag, Typography } from 'antd';
+import { Calendar, CalendarProps, Card, Flex, Form, Typography } from 'antd';
+import { Dayjs } from 'dayjs';
 import { Select } from '~components';
 import { designToken } from '~core';
-import { ChevronDownSolidIcon, LayerGroupOutlinedIcon, MonitorOutlinedIcon } from '~icons';
+import {
+    BookmarkStarIcon,
+    CalendarCheckedOutlinedIcon,
+    CalendarEmptyOutlinedIcon,
+    ChevronDownSolidIcon,
+    LayerGroupOutlinedIcon,
+    MessageOutlinedIcon,
+    MonitorOutlinedIcon,
+    UserCallIcon,
+} from '~icons';
+import {
+    CalendarHeader,
+    CardStatistics,
+    StyledDot,
+    StyledPaper,
+    StyledRadialText,
+    StyledRadialWrapper,
+    StyledTextLarge,
+    StyledTextSmall,
+    StyledTextSmallBold,
+} from './components';
 
 declare global {
     interface Date {
@@ -147,102 +166,68 @@ const value = [
     },
 ];
 const dataRadial1 = [
-    { name: 'running', star: 422 },
-    { name: 'stopping', star: 3779 },
+    { name: 'stopping', count: 422 },
+    { name: 'running', count: 3779 },
 ];
 const dataRadial2 = [
-    { name: 'canceled', star: 32 },
-    { name: 'waiting', star: 486 },
-    { name: 'used', star: 3721 },
+    { name: 'running', count: 66 },
+    { name: 'stopping', count: 210 },
+];
+const dataRadial3 = [
+    { name: 'canceled', count: 32 },
+    { name: 'waiting', count: 486 },
+    { name: 'used', count: 3721 },
 ];
 
-const StyledRadialWrapper = styled.div({
-    position: 'relative',
-    width: 90,
-    height: 90,
-    margin: -20,
-});
-const StyledRadialText = styled.div({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-});
-const StyledPaper = styled.div({
-    paddingBlock: 8,
-    paddingInline: 12,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    boxShadow: '2px 2px 15px 0px #4640431A',
-});
-const StyledCircle = styled.div({
-    width: 40,
-    height: 40,
-    borderRadius: '100%',
-    backgroundColor: '#35c75a',
-});
-const StyledTextLarge = styled.div({
-    fontSize: '1.1rem',
-    fontWeight: 700,
-    lineHeight: 1.5,
-    color: designToken['gray-400'],
-});
-const StyledTextSmall = styled.div({
-    fontSize: '0.9rem',
-    fontWeight: 600,
-    lineHeight: 1.5,
-    color: 'inherit',
-});
-const StyledTextSmallBold = styled.div<{ color: string }>((props) => ({
-    fontSize: '0.9rem',
-    fontWeight: 700,
-    lineHeight: 1.3,
-    color: props.color,
-}));
-const StyledDot = styled.span<{ color: string }>((props) => ({
-    display: 'inline-block',
-    width: 4,
-    height: 4,
-    backgroundColor: props.color,
-    borderRadius: '100%',
-}));
-const StyledTag = styled(Tag)({ '&&': { borderRadius: 999, color: designToken['orange-400'] } });
-
-const CardStatistics = () => (
-    <StyledPaper>
-        <Flex align='center' gap={12}>
-            <StyledCircle />
-
-            <StyledTextSmallBold color={designToken['gray-400']}>Số thứ tự đã cấp</StyledTextSmallBold>
-        </Flex>
-        <Flex align='center' justify='space-between' style={{ marginTop: 12 }}>
-            <StyledTextLarge>4.221</StyledTextLarge>
-            <StyledTag color='#FF950126' bordered={false} icon={<ArrowDownOutlined />}>
-                32,41%
-            </StyledTag>
-        </Flex>
-    </StyledPaper>
-);
-
 function DashboardPage() {
+    const handlePanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
+        console.log(value.format('YYYY-MM-DD'), mode);
+    };
+
     return (
         <Flex gap={8}>
             <div style={{ width: 'calc(100% - 360px)', marginTop: 88 }}>
                 <Typography.Title level={3} style={{ marginBottom: 16, color: designToken['orange-500'] }}>
                     Biểu đồ cấp số
                 </Typography.Title>
-                <Flex style={{ marginBottom: 16, marginInline: -6 }}>
-                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 6 }}>
-                        <CardStatistics />
+                <Flex style={{ marginBottom: 16, marginInline: -4 }}>
+                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 4 }}>
+                        <CardStatistics
+                            content='32,41%'
+                            bg='#6695FB26'
+                            iconColor='#6695FB'
+                            tagColor='#FF950126'
+                            icon={<CalendarEmptyOutlinedIcon />}
+                        />
                     </div>
-                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 6 }}>
-                        <CardStatistics />
+                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 4 }}>
+                        <CardStatistics
+                            content='32,41%'
+                            down
+                            bg='#35C75A26'
+                            iconColor='#35C75A'
+                            tagColor='#E73F3F26'
+                            icon={<CalendarCheckedOutlinedIcon />}
+                        />
                     </div>
-                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 6 }}>
-                        <CardStatistics />
+                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 4 }}>
+                        <CardStatistics
+                            content='56,41%'
+                            bg='#FFAC6A26'
+                            iconColor='#FFAC6A'
+                            tagColor='#FF950126'
+                            icon={<UserCallIcon />}
+                        />
                     </div>
-                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 6 }}>
-                        <CardStatistics />
+                    <div style={{ flex: '0 0 auto', width: 'calc(100% / 4)', paddingInline: 4 }}>
+                        <CardStatistics
+                            content='22,41%'
+                            down
+                            bg='#F86D6D26'
+                            iconColor='#F86D6D'
+                            tagColor='#E73F3F26'
+                            icon={<BookmarkStarIcon />}
+                        />
                     </div>
                 </Flex>
 
@@ -290,9 +275,9 @@ function DashboardPage() {
                             <RadialBar
                                 data={dataRadial1}
                                 xField='name'
-                                yField='star'
+                                yField='count'
                                 radius={1}
-                                innerRadius={0.4}
+                                innerRadius={0.6}
                                 legend={false}
                                 axis={{ x: false, y: false }}
                                 tooltip={{ items: [''] }}
@@ -318,20 +303,24 @@ function DashboardPage() {
                             </Flex>
                         </div>
 
-                        <div style={{ marginLeft: 'auto' }}>
-                            <Flex align='center' gap={4}>
-                                <Flex align='center' gap={4} style={{ minWidth: 118 }}>
+                        <div style={{ minWidth: 168, marginLeft: 'auto' }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
                                     <StyledDot color='#ffd130' />
                                     <span>Đang hoạt động</span>
                                 </Flex>
-                                <StyledTextSmallBold color={designToken['orange-500']}>3.799</StyledTextSmallBold>
+                                <StyledTextSmallBold color={designToken['orange-500']} style={{ minWidth: 40 }}>
+                                    3.799
+                                </StyledTextSmallBold>
                             </Flex>
-                            <Flex align='center' gap={4}>
-                                <Flex align='center' gap={4} style={{ minWidth: 118 }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
                                     <StyledDot color={designToken['gray-300']} />
                                     <span>Ngưng hoạt động</span>
                                 </Flex>
-                                <StyledTextSmallBold color={designToken['orange-500']}>422</StyledTextSmallBold>
+                                <StyledTextSmallBold color={designToken['orange-500']} style={{ minWidth: 40 }}>
+                                    422
+                                </StyledTextSmallBold>
                             </Flex>
                         </div>
                     </Flex>
@@ -344,7 +333,65 @@ function DashboardPage() {
                             <RadialBar
                                 data={dataRadial2}
                                 xField='name'
-                                yField='star'
+                                yField='count'
+                                radius={1}
+                                innerRadius={0.6}
+                                legend={false}
+                                axis={{ x: false, y: false }}
+                                tooltip={{ items: [''] }}
+                                scale={{ y: { domain: [0, 276] } }}
+                                markBackground={{ opacity: 0.25 }}
+                                sizeField={10}
+                                style={{
+                                    radius: 180,
+                                    fill: (_: unknown, index: number) => {
+                                        return index === 0 ? designToken['gray-300'] : '#4277FF';
+                                    },
+                                }}
+                            />
+                            <StyledRadialText>76%</StyledRadialText>
+                        </StyledRadialWrapper>
+
+                        <div style={{ marginLeft: 12 }}>
+                            <StyledTextLarge>276</StyledTextLarge>
+
+                            <Flex gap={4} style={{ color: '#4277FF' }}>
+                                <MessageOutlinedIcon size={14} />
+                                <StyledTextSmall>Dịch vụ</StyledTextSmall>
+                            </Flex>
+                        </div>
+
+                        <div style={{ minWidth: 168, marginLeft: 'auto' }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
+                                    <StyledDot color='#4277FF' />
+                                    <span>Đang hoạt động</span>
+                                </Flex>
+                                <StyledTextSmallBold color={'#4277FF'} style={{ minWidth: 40 }}>
+                                    210
+                                </StyledTextSmallBold>
+                            </Flex>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
+                                    <StyledDot color={designToken['gray-300']} />
+                                    <span>Ngưng hoạt động</span>
+                                </Flex>
+                                <StyledTextSmallBold color={'#4277FF'} style={{ minWidth: 40 }}>
+                                    66
+                                </StyledTextSmallBold>
+                            </Flex>
+                        </div>
+                    </Flex>
+                </StyledPaper>
+
+                {/* Item 3 */}
+                <StyledPaper>
+                    <Flex align='center'>
+                        <StyledRadialWrapper>
+                            <RadialBar
+                                data={dataRadial3}
+                                xField='name'
+                                yField='count'
                                 radius={1}
                                 innerRadius={0.4}
                                 legend={false}
@@ -376,30 +423,40 @@ function DashboardPage() {
                             </Flex>
                         </div>
 
-                        <div style={{ marginLeft: 'auto' }}>
-                            <Flex align='center' gap={4}>
-                                <Flex align='center' gap={4} style={{ minWidth: 118 }}>
+                        <div style={{ minWidth: 168, marginLeft: 'auto' }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
                                     <StyledDot color='#35c75a' />
                                     <span>Đã sử dụng</span>
                                 </Flex>
-                                <StyledTextSmallBold color='#35c75a'>3.721</StyledTextSmallBold>
+                                <StyledTextSmallBold color='#35c75a' style={{ minWidth: 40 }}>
+                                    3.721
+                                </StyledTextSmallBold>
                             </Flex>
-                            <Flex align='center' gap={4}>
-                                <Flex align='center' gap={4} style={{ minWidth: 118 }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
                                     <StyledDot color={designToken['gray-300']} />
                                     <span>Đang chờ</span>
                                 </Flex>
-                                <StyledTextSmallBold color='#35c75a'>486</StyledTextSmallBold>
+                                <StyledTextSmallBold color='#35c75a' style={{ minWidth: 40 }}>
+                                    486
+                                </StyledTextSmallBold>
                             </Flex>
-                            <Flex align='center' gap={4}>
-                                <Flex align='center' gap={4} style={{ minWidth: 118 }}>
+                            <Flex align='center' justify='space-between'>
+                                <Flex align='center' gap={4}>
                                     <StyledDot color='#f178b6' />
                                     <span>Bỏ qua</span>
                                 </Flex>
-                                <StyledTextSmallBold color='#35c75a'>32</StyledTextSmallBold>
+                                <StyledTextSmallBold color='#35c75a' style={{ minWidth: 40 }}>
+                                    32
+                                </StyledTextSmallBold>
                             </Flex>
                         </div>
                     </Flex>
+                </StyledPaper>
+
+                <StyledPaper>
+                    <Calendar fullscreen={false} headerRender={CalendarHeader} onPanelChange={handlePanelChange} />
                 </StyledPaper>
             </StyledPaper>
         </Flex>

@@ -118,7 +118,7 @@ function DashboardLayout() {
                     </div>
                 </Layout.Header>
 
-                <Layout.Content css={{ minHeight: '100vh', padding: '0 0 26px 24px' }}>
+                <Layout.Content css={{ minHeight: '100vh', padding: '0 0 26px 16px' }}>
                     <Suspense fallback={<Skeleton />}>
                         <Outlet />
                     </Suspense>
