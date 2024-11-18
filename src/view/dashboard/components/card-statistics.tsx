@@ -12,20 +12,22 @@ interface IProps {
     tagColor: string;
     iconColor: string;
     bg: string;
+    total: string;
+    value: string;
     content: string;
     icon: ReactNode;
 }
 
-function CardStatistics({ down, iconColor, tagColor, bg, content, icon }: IProps) {
+function CardStatistics({ down, iconColor, tagColor, bg, total, value, content, icon }: IProps) {
     return (
         <StyledPaper>
             <Flex align='center' gap={6}>
                 <div
                     css={{
+                        flex: 1,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: 40,
                         height: 40,
                         borderRadius: '100%',
                         backgroundColor: bg,
@@ -38,12 +40,14 @@ function CardStatistics({ down, iconColor, tagColor, bg, content, icon }: IProps
                     {icon}
                 </div>
 
-                <StyledTextSmallBold color={designToken['gray-400']}>Số thứ tự đã cấp</StyledTextSmallBold>
+                <StyledTextSmallBold color={designToken['gray-400']} style={{ maxWidth: 92 }}>
+                    {content}
+                </StyledTextSmallBold>
             </Flex>
             <Flex align='center' justify='space-between' style={{ marginTop: 12 }}>
-                <StyledTextLarge>4.221</StyledTextLarge>
+                <StyledTextLarge>{total}</StyledTextLarge>
                 <StyledTag color={tagColor} bordered={false} icon={down ? <ArrowDownOutlined /> : <ArrowUpOutlined />}>
-                    {content}
+                    {value}
                 </StyledTag>
             </Flex>
         </StyledPaper>

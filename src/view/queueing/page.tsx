@@ -135,7 +135,7 @@ function QueueingPage() {
                         <div css={cssFloatIconWrapper}>
                             <AddSquareSolidIcon />
                         </div>
-                        <span css={cssFloatContent}>Thêm thiết bị</span>
+                        <span css={cssFloatContent}>Cấp số mới</span>
                     </div>
                 </Link>
             </div>
