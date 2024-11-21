@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { BodyOnlyLayout, DashboardLayout, DefaultLayout } from '~layout';
 import dashboardRouter from '~view/dashboard/router';
-import homeRouter from '~view/home/router';
 import addMonitorRouter from '~view/monitor/add/router';
 import monitorDetailRouter from '~view/monitor/detail/router';
 import editMonitorRouter from '~view/monitor/edit/router';
@@ -11,6 +10,7 @@ import profileRouter from '~view/profile/router';
 import addQueueRouter from '~view/queueing/add/router';
 import queueingRouter from '~view/queueing/router';
 import reportRouter from '~view/report/router';
+import addServiceRouter from '~view/service/add/router';
 import serviceDetailRouter from '~view/service/detail/router';
 import editServiceRouter from '~view/service/edit/router';
 import serviceRouter from '~view/service/router';
@@ -23,8 +23,7 @@ import editUserRouter from '~view/setting/user-management/edit/router';
 import userManagementRouter from '~view/setting/user-management/router';
 import signInRouter from '~view/sign-in/router';
 
-import addServiceRouter from '~view/service/add/router';
-import { PrivateRoute } from './components';
+import { NavigateDefault, PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
     {
@@ -37,20 +36,16 @@ export const browserRouter = createBrowserRouter([
         ],
     },
     {
-        path: '',
         Component: DefaultLayout,
         children: [
             {
-                path: '',
                 Component: PrivateRoute,
                 children: [
-                    homeRouter,
                     profileRouter,
                     {
                         path: '/monitor',
                         children: [
                             {
-                                path: '',
                                 children: [monitorRouter, addMonitorRouter, monitorDetailRouter, editMonitorRouter],
                                 handle: {
                                     title: 'Danh sách thiết bị',
@@ -66,7 +61,6 @@ export const browserRouter = createBrowserRouter([
                         path: '/service',
                         children: [
                             {
-                                path: '',
                                 children: [serviceRouter, addServiceRouter, serviceDetailRouter, editServiceRouter],
                                 handle: {
                                     title: 'Danh sách dịch vụ',
@@ -82,7 +76,6 @@ export const browserRouter = createBrowserRouter([
                         path: '/queueing',
                         children: [
                             {
-                                path: '',
                                 children: [queueingRouter, addQueueRouter],
                                 handle: {
                                     title: 'Danh sách cấp số',
@@ -131,8 +124,11 @@ export const browserRouter = createBrowserRouter([
         ],
     },
     {
-        path: '',
         Component: BodyOnlyLayout,
         children: [signInRouter],
+    },
+    {
+        path: '*',
+        Component: NavigateDefault,
     },
 ]);
