@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Flex, Form, FormProps, Input, Typography } from 'antd';
+import { Alert, Button, Flex, Form, FormProps, Input, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,16 +28,40 @@ function SignInPage() {
     }, [loading, navigate]);
 
     const handleFinish: FormProps<FieldType>['onFinish'] = async ({ username, password }) => {
-        await dispatch(fetchSignIn({ username, password: password! }));
+        await dispatch(fetchSignIn({ username, password }));
     };
 
     return (
         <Flex>
-            <div css={{ flex: '1', display: 'flex', alignItems: 'center', paddingInline: 16 }}>
+            <Flex
+                flex={1}
+                vertical
+                justify='center'
+                gap={16}
+                css={{
+                    paddingInline: 16,
+                }}
+            >
+                {import.meta.env.MODE === 'production' && (
+                    <Alert
+                        message={
+                            <>
+                                Tài khoản <strong>user1</strong> với mật khẩu <strong>123456789</strong>
+                            </>
+                        }
+                        type='success'
+                        showIcon
+                    />
+                )}
+
                 <Form
                     name='basic'
                     layout='vertical'
-                    initialValues={{ remember: true }}
+                    initialValues={
+                        import.meta.env.MODE === 'production'
+                            ? { username: 'user1', password: '123456789' }
+                            : { username: '', password: '' }
+                    }
                     autoComplete='off'
                     onFinish={handleFinish}
                     css={{ width: 400, marginInline: 'auto' }}
@@ -89,7 +113,7 @@ function SignInPage() {
                         </div>
                     </Form.Item>
                 </Form>
-            </div>
+            </Flex>
 
             <div css={{ position: 'relative', width: '58.89%', minHeight: '100vh', backgroundColor: '#fff' }}>
                 <img
