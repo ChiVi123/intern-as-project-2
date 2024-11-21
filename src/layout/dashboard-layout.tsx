@@ -1,14 +1,15 @@
 import { Avatar, Button, Layout, Skeleton } from 'antd';
-import { BreadcrumbItemType, BreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb';
-import { Suspense, useMemo } from 'react';
+import { BreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb';
+import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, Outlet, useMatches } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import { FirebaseAuth, ScrollToTop } from '~components';
 import { designToken } from '~core';
 import { AngleRightIcon, BellSolidIcon } from '~icons';
 import { userSelectors } from '~modules/user';
 
+import { useBreadcrumb } from '~hook';
 import { Breadcrumb, ModalNotify, NotifyItem, Sidebar } from './components';
 
 type ItemRender = BreadcrumbProps['itemRender'];
@@ -20,18 +21,7 @@ const ItemRender: ItemRender = (currentRoute, _params, items, paths) => {
 
 function DashboardLayout() {
     const currentUser = useSelector(userSelectors.data);
-    const matchers = useMatches();
-    const breadcrumb = useMemo<BreadcrumbItemType[]>(() => {
-        return matchers
-            .filter((matcher) => Boolean(matcher.handle))
-            .map(
-                ({ handle }) =>
-                    ({
-                        title: handle && typeof handle === 'object' && 'title' in handle ? handle?.title : '',
-                        path: handle && typeof handle === 'object' && 'href' in handle ? handle?.href : undefined,
-                    } as BreadcrumbItemType),
-            );
-    }, [matchers]);
+    const breadcrumb = useBreadcrumb();
 
     return (
         <Layout>

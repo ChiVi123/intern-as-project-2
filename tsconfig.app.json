@@ -57,6 +57,8 @@
             "~hoc": ["./src/shared/hoc"],
             "~hoc/*": ["./src/shared/hoc/*"],
 
+            "~hook": ["./src/shared/hook/index.ts"],
+
             "~utils": ["./src/shared/utils"],
             "~utils/*": ["./src/shared/utils/*"],
 
