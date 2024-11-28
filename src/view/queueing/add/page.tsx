@@ -64,7 +64,7 @@ function AddQueuePage() {
             device: 'Kiosk',
             phoneNumber: '0948523623',
             email: 'nguyendung@gmail.com',
-            status: 'Đang chờ',
+            status: { label: 'Đang chờ', value: 'pending' },
             createdAt: Timestamp.fromDate(createdDate),
             expired: Timestamp.fromDate(expiredDate),
             service: serviceRef,

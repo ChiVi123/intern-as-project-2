@@ -1,16 +1,27 @@
-import { collection, CollectionReference, doc, DocumentData, DocumentReference, setDoc } from 'firebase/firestore';
+import {
+    collection,
+    CollectionReference,
+    doc,
+    DocumentData,
+    DocumentReference,
+    getCountFromServer,
+    query,
+    serverTimestamp,
+    setDoc,
+    where,
+} from 'firebase/firestore';
 
 import { firebaseStore } from '~config';
 import { getDocData, getDocsData, ResponseErrorRepo, ResponseRepo } from '~core';
-import { IDeviceEntity } from './entity';
+import { DeviceForm, IDeviceEntity } from './entity';
 
 export const deviceCollection = collection(firebaseStore, 'device') as CollectionReference<IDeviceEntity, DocumentData>;
 
-export const addDevice = async (data: IDeviceEntity) => {
+export const addDevice = async (data: DeviceForm) => {
     const { id, ...dataDoc } = data;
     const dataRef = doc(firebaseStore, 'device', id);
     try {
-        await setDoc(dataRef, dataDoc);
+        await setDoc(dataRef, { ...dataDoc, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
         return new ResponseRepo('Thêm thiết bị thành công');
     } catch (error) {
         return new ResponseErrorRepo('Thêm thiết bị thất bại', error);
@@ -33,11 +44,20 @@ export const getDeviceById = async (id: string) => {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }
 };
-export const editDevice = async (id: string, data: Omit<IDeviceEntity, 'id'>) => {
+export const editDevice = async (id: string, data: Omit<DeviceForm, 'id'>) => {
     const dataRef = doc(firebaseStore, 'device', id) as DocumentReference<IDeviceEntity>;
     try {
-        await setDoc(dataRef, data, { merge: true });
+        await setDoc(dataRef, { ...data, updatedAt: serverTimestamp() }, { merge: true });
         return new ResponseRepo('cập nhật thành công', '');
+    } catch (error) {
+        return new ResponseErrorRepo('Xảy ra lỗi', error);
+    }
+};
+export const countDeviceByActionStatus = async (actionStatus: string) => {
+    try {
+        const q = query(deviceCollection, where('actionStatus.value', '==', actionStatus));
+        const snapshot = await getCountFromServer(q);
+        return new ResponseRepo('Thành công', snapshot.data().count);
     } catch (error) {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }

@@ -81,6 +81,10 @@ function EditMonitorPage() {
         }
 
         messageApi.open({ type: deviceResult.success ? 'success' : 'error', content: deviceResult.message });
+
+        if (deviceResult.success) {
+            navigate('/monitor');
+        }
     };
 
     return (

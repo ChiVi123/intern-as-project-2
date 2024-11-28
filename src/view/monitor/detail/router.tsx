@@ -1,4 +1,4 @@
-import { doc, DocumentReference } from 'firebase/firestore';
+import { doc, DocumentReference, Timestamp } from 'firebase/firestore';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { firebaseStore } from '~config';
@@ -17,6 +17,8 @@ const defaultDevice: IDeviceEntity = {
     actionStatus: { label: '', value: '' },
     connectStatus: { label: '', value: '' },
     services: [],
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
 };
 
 const monitorDetailRouter: RouteObject = {

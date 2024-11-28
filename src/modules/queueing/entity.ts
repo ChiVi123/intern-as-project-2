@@ -7,7 +7,7 @@ export interface IQueueingEntity {
     email: string;
     phoneNumber: string;
     device: string;
-    status: string;
+    status: { label: string; value: string };
     ordinalNumber: number;
     createdAt: Timestamp;
     expired: Timestamp;

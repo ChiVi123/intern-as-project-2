@@ -49,7 +49,7 @@ const columns: TableColumnsType<IQueueingEntity> = [
         title: 'Trạng thái',
         dataIndex: 'status',
         key: 'status',
-        render: (value: string) => {
+        render: ({ label, value }: { label: string; value: string }) => {
             return (
                 <>
                     <span
@@ -60,14 +60,14 @@ const columns: TableColumnsType<IQueueingEntity> = [
                             marginRight: 4,
                             borderRadius: '100%',
                             backgroundColor:
-                                value === 'Đang chờ'
+                                value === 'pending'
                                     ? designToken.colorInfo
-                                    : value === 'Đã sử dụng'
+                                    : value === 'used'
                                     ? designToken['gray-300']
                                     : designToken.colorError,
                         }}
                     ></span>
-                    {value}
+                    {label}
                 </>
             );
         },

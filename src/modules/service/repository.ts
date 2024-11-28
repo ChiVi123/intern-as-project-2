@@ -1,4 +1,13 @@
-import { collection, CollectionReference, doc, DocumentReference, setDoc } from 'firebase/firestore';
+import {
+    collection,
+    CollectionReference,
+    doc,
+    DocumentReference,
+    getCountFromServer,
+    query,
+    setDoc,
+    where,
+} from 'firebase/firestore';
 
 import { firebaseStore } from '~config';
 import { getDocData, getDocsData, ResponseErrorRepo, ResponseRepo } from '~core';
@@ -39,6 +48,15 @@ export const editServiceById = async (id: string, data: Omit<IServiceEntity, 'id
     try {
         await setDoc(dataRef, data, { merge: true });
         return new ResponseRepo('cập nhật thành công', '');
+    } catch (error) {
+        return new ResponseErrorRepo('Xảy ra lỗi', error);
+    }
+};
+export const countServiceByStatus = async (status: string) => {
+    try {
+        const q = query(serviceCollection, where('status.value', '==', status));
+        const snapshot = await getCountFromServer(q);
+        return new ResponseRepo('Thành công', snapshot.data().count);
     } catch (error) {
         return new ResponseErrorRepo('Xảy ra lỗi', error);
     }
